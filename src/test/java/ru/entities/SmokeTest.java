@@ -51,6 +51,7 @@ public class SmokeTest {
             manager.getTransaction().commit();
         } catch(Exception e) {
             manager.getTransaction().rollback();
+            throw e;
         }
 
         Assert.assertNotNull(manager.find(User.class, user.getId()));

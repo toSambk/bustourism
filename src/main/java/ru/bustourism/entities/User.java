@@ -30,6 +30,7 @@ public class User implements Serializable {
                                     inverseJoinColumns = {@JoinColumn(referencedColumnName = "ID")})
     private List<Tour> tours;
 
+
     public String getLogin() {
         return login;
     }
