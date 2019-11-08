@@ -18,7 +18,11 @@ public class UserDAO {
     }
 
     public void deleteUser(User user) {
-        manager.remove(user);
+
+        User persistUser = manager.createQuery("from User where id = :id", User.class)
+                .setParameter("id", user.getId())
+                .getSingleResult();
+        manager.remove(persistUser);
     }
 
     public void updateUser(User user) {
@@ -35,6 +39,12 @@ public class UserDAO {
         return manager.createQuery("from User where login = :login AND password = :password", User.class)
                 .setParameter("login", login)
                 .setParameter("password", password)
+                .getSingleResult();
+    }
+
+    public User findById(int id) {
+        return manager.createQuery("from User where id = :id", User.class)
+                .setParameter("id", id)
                 .getSingleResult();
     }
 

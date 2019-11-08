@@ -38,7 +38,7 @@ public class SmokeTest {
     @Test
     public void createUser() {
 
-        User user = new User("test", "123");
+        User user = new User("test", "123", false);
         Tour tour = new Tour("testtour", 100, 5, 3, new Date());
 
         user.setTours(Arrays.asList(tour));

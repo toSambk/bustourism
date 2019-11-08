@@ -10,9 +10,10 @@ public class User implements Serializable {
 
     public User(){}
 
-    public User(String login, String password){
+    public User(String login, String password, boolean administrator){
         this.login = login;
         this.password = password;
+        this.administrator = administrator;
     }
 
     @Id
@@ -29,6 +30,9 @@ public class User implements Serializable {
     @JoinTable(name = "USERS_TOURS", joinColumns = {@JoinColumn(referencedColumnName = "ID")},
                                     inverseJoinColumns = {@JoinColumn(referencedColumnName = "ID")})
     private List<Tour> tours;
+
+    @Column(name = "ADMINISTRATOR", nullable = false)
+    private boolean administrator;
 
 
     public String getLogin() {
@@ -61,5 +65,13 @@ public class User implements Serializable {
 
     public void setTours(List<Tour> tours) {
         this.tours = tours;
+    }
+
+    public boolean isAdministrator() {
+        return administrator;
+    }
+
+    public void setAdministrator(boolean administrator) {
+        this.administrator = administrator;
     }
 }

@@ -11,6 +11,7 @@ import ru.bustourism.entities.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 
 import static org.junit.Assert.*;
@@ -44,7 +45,7 @@ public class UserDAOTest {
     @Test
     public void createUser() {
 
-        User user = new User("test", "123");
+        User user = new User("test", "123", false);
         manager.getTransaction().begin();
         try {
             dao.createUser(user);
@@ -58,10 +59,10 @@ public class UserDAOTest {
 
     @Test
     public void deleteUser() {
-        User user = new User("test", "123");
+        User user = new User("test", "123", false);
         manager.getTransaction().begin();
         try {
-            dao.createUser(user);
+            manager.persist(user);
             manager.getTransaction().commit();
         } catch(Exception e) {
             manager.getTransaction().rollback();
@@ -69,10 +70,7 @@ public class UserDAOTest {
 
         manager.getTransaction().begin();
         try {
-            User persistentUser = manager.createQuery("from User where id = :id", User.class)
-                    .setParameter("id", user.getId())
-                    .getSingleResult();
-            dao.deleteUser(persistentUser);
+            dao.deleteUser(user);
             manager.getTransaction().commit();
         } catch(Exception e) {
             manager.getTransaction().rollback();
@@ -85,10 +83,10 @@ public class UserDAOTest {
     @Test
     public void updateUser() {
 
-        User user = new User("test", "123");
+        User user = new User("test", "123", false);
         manager.getTransaction().begin();
         try {
-            dao.createUser(user);
+            manager.persist(user);
             manager.getTransaction().commit();
         } catch(Exception e) {
             manager.getTransaction().rollback();
@@ -108,13 +106,80 @@ public class UserDAOTest {
             throw e;
         }
 
+        User found = manager.createQuery("from User where login = :newLogin", User.class)
+                .setParameter("newLogin", "testNew")
+                .getSingleResult();
+        Assert.assertNotNull(found);
+        try {
+            manager.createQuery("from User where login = :newLogin", User.class)
+                    .setParameter("newLogin", "test")
+                    .getSingleResult();
+            Assert.assertTrue(false);
+        } catch(NoResultException e) {
+            Assert.assertTrue(true);
+        }
     }
 
     @Test
     public void findByLogin() {
+
+        User user = new User("test", "123", false);
+        manager.getTransaction().begin();
+        try {
+            manager.persist(user);
+            manager.getTransaction().commit();
+        } catch(Exception e) {
+            manager.getTransaction().rollback();
+            throw e;
+        }
+
+        User found = dao.findByLogin("test");
+        Assert.assertNotNull(found);
+        Assert.assertEquals(user.getId(), found.getId());
+
     }
 
     @Test
     public void findByLoginAndPassword() {
+
+        User user = new User("test", "123", false);
+        manager.getTransaction().begin();
+        try {
+            manager.persist(user);
+            manager.getTransaction().commit();
+        } catch(Exception e) {
+            manager.getTransaction().rollback();
+            throw e;
+        }
+
+        User found = dao.findByLoginAndPassword("test", "123");
+        Assert.assertNotNull(found);
+        Assert.assertEquals(user.getId(), found.getId());
+
+        try {
+            dao.findByLoginAndPassword("test", "incorrectPassword");
+            Assert.fail("User shouldn't be found.");
+        } catch(NoResultException expected) {
+        }
+
+    }
+
+    @Test
+    public void findById() {
+
+        User user = new User("test", "123", false);
+        manager.getTransaction().begin();
+        try {
+            manager.persist(user);
+            manager.getTransaction().commit();
+        } catch(Exception e) {
+            manager.getTransaction().rollback();
+            throw e;
+        }
+
+        User found = dao.findById(user.getId());
+        Assert.assertNotNull(found);
+        Assert.assertEquals(user.getId(), found.getId());
+
     }
 }
