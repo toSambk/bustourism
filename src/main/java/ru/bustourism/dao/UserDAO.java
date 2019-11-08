@@ -1,9 +1,11 @@
 package ru.bustourism.dao;
 
+import ru.bustourism.entities.Tour;
 import ru.bustourism.entities.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import java.util.List;
 
 public class UserDAO {
 
@@ -47,8 +49,6 @@ public class UserDAO {
                 .setParameter("id", id)
                 .getSingleResult();
     }
-
-
 
 
 }

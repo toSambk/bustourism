@@ -56,6 +56,8 @@ public class SmokeTest {
 
         Assert.assertNotNull(manager.find(User.class, user.getId()));
         Assert.assertNotNull(manager.find(Tour.class, tour.getId()));
+
+//        manager.find(User.class, user.getId()).getTours().forEach(x-> System.out.println(x.getName()));
     }
 
 }
