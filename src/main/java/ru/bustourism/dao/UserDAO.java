@@ -9,9 +9,9 @@ import java.util.List;
 
 public class UserDAO {
 
-    private EntityManager manager;
+    private final EntityManager manager;
 
-    UserDAO(EntityManager manager) {
+    public UserDAO(EntityManager manager) {
         this.manager = manager;
     }
 
@@ -50,5 +50,8 @@ public class UserDAO {
                 .getSingleResult();
     }
 
+    public List<User> findAllUsers() {
+        return manager.createQuery("from User", User.class).getResultList();
+    }
 
 }

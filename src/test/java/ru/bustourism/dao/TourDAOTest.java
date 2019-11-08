@@ -6,12 +6,10 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import ru.bustourism.entities.Tour;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
-
 import java.util.Date;
 import java.util.List;
 
@@ -175,6 +173,33 @@ public class TourDAOTest {
         Assert.assertEquals(toursAbove4.size(), 1);
         Assert.assertEquals(toursAbove1.size(), 2);
         Assert.assertEquals(toursAbove4.get(0).getId(), goodTour.getId());
+
+    }
+
+    @Test
+    public void findAllTours() {
+
+        Tour goodTour = new Tour("goodTour", 100, 50, 5, new Date());
+        Tour mediumTour = new Tour("mediumTour", 100, 70, 3, new Date());
+        Tour badTour = new Tour("badTour", 50, 5, 1, new Date());
+
+        manager.getTransaction().begin();
+        try {
+            manager.persist(goodTour);
+            manager.persist(mediumTour);
+            manager.persist(badTour);
+            manager.getTransaction().commit();
+        } catch(Exception e) {
+            manager.getTransaction().rollback();
+            throw e;
+        }
+
+        List<Tour> users = manager.createQuery("from Tour", Tour.class).getResultList();
+
+        Assert.assertEquals(users.size(), 3);
+        Assert.assertEquals(users.stream().filter(x-> x.getId() == badTour.getId()).findFirst().get().getId(), badTour.getId());
+        Assert.assertEquals(users.stream().filter(x-> x.getId() == mediumTour.getId()).findFirst().get().getId(), mediumTour.getId());
+        Assert.assertEquals(users.stream().filter(x-> x.getId() == goodTour.getId()).findFirst().get().getId(), goodTour.getId());
 
     }
 }

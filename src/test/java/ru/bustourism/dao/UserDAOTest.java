@@ -11,6 +11,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class UserDAOTest {
@@ -179,4 +181,32 @@ public class UserDAOTest {
         Assert.assertEquals(user.getId(), found.getId());
 
     }
+
+    @Test
+    public void findAllUsers() {
+
+        User admin = new User("admin", "admin", true);
+        User user1 = new User("user1", "123", false);
+        User user2 = new User("user2", "456", false);
+
+        manager.getTransaction().begin();
+        try {
+            manager.persist(admin);
+            manager.persist(user1);
+            manager.persist(user2);
+            manager.getTransaction().commit();
+        } catch(Exception e) {
+            manager.getTransaction().rollback();
+            throw e;
+        }
+
+        List<User> users = manager.createQuery("from User", User.class).getResultList();
+
+        Assert.assertEquals(users.size(), 3);
+        Assert.assertEquals(users.stream().filter(x-> x.getId() == admin.getId()).findFirst().get().getId(), admin.getId());
+        Assert.assertEquals(users.stream().filter(x-> x.getId() == user1.getId()).findFirst().get().getId(), user1.getId());
+        Assert.assertEquals(users.stream().filter(x-> x.getId() == user2.getId()).findFirst().get().getId(), user2.getId());
+    }
+
+
 }

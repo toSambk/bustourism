@@ -9,9 +9,9 @@ import java.util.List;
 
 public class TourDAO {
 
-    private EntityManager manager;
+    private final EntityManager manager;
 
-    TourDAO(EntityManager manager) {
+    public TourDAO(EntityManager manager) {
         this.manager = manager;
     }
 
@@ -46,6 +46,10 @@ public class TourDAO {
         return manager.createQuery("from Tour where rating >= :rating", Tour.class)
                 .setParameter("rating", rating)
                 .getResultList();
+    }
+
+    public List<Tour> findAllTours() {
+        return manager.createQuery("from Tour", Tour.class).getResultList();
     }
 
 }
