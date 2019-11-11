@@ -3,6 +3,7 @@ package ru.bustourism.entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "USERS")
@@ -74,4 +75,5 @@ public class User implements Serializable {
     public void setAdministrator(boolean administrator) {
         this.administrator = administrator;
     }
+
 }

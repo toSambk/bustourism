@@ -20,6 +20,7 @@ public class StartupListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
+
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("BusTourismAppPersistenceUnit");
         EntityManager manager = factory.createEntityManager();
         TourDAO tourDAO = new TourDAO(manager);
@@ -31,6 +32,7 @@ public class StartupListener implements ServletContextListener {
         Tour mediumTour = new Tour("mediumTour", 100, 70, 3, new Date());
         Tour badTour = new Tour("badTour", 50, 5, 1, new Date());
 
+
         user1.setTours(Arrays.asList(goodTour, mediumTour));
         user2.setTours(Arrays.asList(goodTour, mediumTour, badTour));
         goodTour.setUsers(Arrays.asList(user1, user2));
@@ -39,6 +41,7 @@ public class StartupListener implements ServletContextListener {
 
         manager.getTransaction().begin();
         try {
+            userDAO.createUser(admin);
             userDAO.createUser(user1);
             userDAO.createUser(user2);
             tourDAO.createTour(badTour);
@@ -65,7 +68,7 @@ public class StartupListener implements ServletContextListener {
         }
     }
 
-    public EntityManagerFactory getFactory(ServletContext context) {
+    public static EntityManagerFactory getFactory(ServletContext context) {
         return (EntityManagerFactory) context.getAttribute("factory");
     }
 }

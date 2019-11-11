@@ -91,4 +91,12 @@ public class Tour implements Serializable {
     public void setUsers(List<User> users) {
         this.users = users;
     }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 }
