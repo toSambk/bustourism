@@ -20,10 +20,7 @@ public class TourDAO {
     }
 
     public void deleteTour(Tour tour) {
-        Tour persistTour = manager.createQuery("from Tour where id = :id", Tour.class)
-                .setParameter("id", tour.getId())
-                .getSingleResult();
-        manager.remove(persistTour);
+        manager.remove(tour);
     }
 
     public void updateTour(Tour tour) {

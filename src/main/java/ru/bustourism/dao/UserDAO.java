@@ -20,11 +20,7 @@ public class UserDAO {
     }
 
     public void deleteUser(User user) {
-
-        User persistUser = manager.createQuery("from User where id = :id", User.class)
-                .setParameter("id", user.getId())
-                .getSingleResult();
-        manager.remove(persistUser);
+        manager.remove(user);
     }
 
     public void updateUser(User user) {
