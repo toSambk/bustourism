@@ -1,5 +1,7 @@
 package ru.bustourism.dao;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import ru.bustourism.entities.Tour;
 import ru.bustourism.entities.User;
 
@@ -7,10 +9,12 @@ import javax.persistence.EntityManager;
 import java.util.Date;
 import java.util.List;
 
+@Repository
 public class TourDAO {
 
     private final EntityManager manager;
 
+    @Autowired
     public TourDAO(EntityManager manager) {
         this.manager = manager;
     }

@@ -1,14 +1,16 @@
 package ru.bustourism.dao;
 
-import ru.bustourism.entities.Tour;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import ru.bustourism.entities.User;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
+@Repository
 public class UserDAO {
 
+    @Autowired
     private final EntityManager manager;
 
     public UserDAO(EntityManager manager) {
