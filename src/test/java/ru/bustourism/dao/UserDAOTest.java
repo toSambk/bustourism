@@ -5,6 +5,12 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import ru.bustourism.config.AppConfig;
 import ru.bustourism.entities.User;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -15,30 +21,20 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = AppConfig.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class UserDAOTest {
 
-    private EntityManagerFactory factory;
-
+    @Autowired
     private EntityManager manager;
 
+    @Autowired
     private UserDAO dao;
 
     @Before
     public void setup() {
-        factory = Persistence.createEntityManagerFactory("BusTourismAppPersistenceUnit");
-        manager = factory.createEntityManager();
-        dao = new UserDAO(manager);
-    }
 
-    @After
-    public void cleanup() {
-        if (manager!=null) {
-            manager.close();
-        }
-
-        if(factory!=null){
-            factory.close();
-        }
     }
 
     @Test
