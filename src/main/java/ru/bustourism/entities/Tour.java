@@ -3,6 +3,7 @@ package ru.bustourism.entities;
 import org.hibernate.annotations.ManyToAny;
 
 import javax.persistence.*;
+import javax.validation.constraints.Positive;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -29,12 +30,15 @@ public class Tour implements Serializable {
     private String name;
 
     @Column(name = "MAX_NUMBER_OF_SEATS", nullable = false)
+    @Positive
     private int maxNumberOfSeats;
 
     @Column(name = "CUR_NUMBER_OF_SEATS")
+    @Positive
     private int curNumberOfSeats;
 
     @Column(name = "RATING", nullable = false, length = 5)
+    @Positive
     private int rating;
 
     @Column(name = "DATE", nullable = false)

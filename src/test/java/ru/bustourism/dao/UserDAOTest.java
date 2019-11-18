@@ -11,18 +11,17 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.bustourism.config.AppConfig;
+import ru.bustourism.config.TestConfig;
 import ru.bustourism.entities.User;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.NoResultException;
-import javax.persistence.Persistence;
+
+import javax.persistence.*;
 
 import java.util.List;
 
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = AppConfig.class)
+@ContextConfiguration(classes = TestConfig.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class UserDAOTest {
 
@@ -32,10 +31,6 @@ public class UserDAOTest {
     @Autowired
     private UserDAO dao;
 
-    @Before
-    public void setup() {
-
-    }
 
     @Test
     public void createUser() {
@@ -49,7 +44,12 @@ public class UserDAOTest {
             manager.getTransaction().rollback();
             throw e;
         }
-        Assert.assertNotNull(manager.find(User.class, user.getId()));
+        try {
+            manager.createQuery("from User where id = :id", User.class)
+                    .setParameter("id", user.getId()).getSingleResult();
+        } catch(NoResultException e) {
+            fail();
+        }
     }
 
     @Test
@@ -63,14 +63,13 @@ public class UserDAOTest {
             manager.getTransaction().rollback();
         }
 
-        manager.getTransaction().begin();
+        dao.deleteUser(user);
+
         try {
-            dao.deleteUser(user);
-            manager.getTransaction().commit();
-        } catch(Exception e) {
-            manager.getTransaction().rollback();
-            Assert.assertTrue(false);
-            throw e;
+            manager.createQuery("from User where id = :id", User.class)
+                    .setParameter("id", user.getId()).getSingleResult();
+            fail();
+        } catch(NoResultException e) {
         }
 
     }
@@ -87,32 +86,25 @@ public class UserDAOTest {
             manager.getTransaction().rollback();
         }
 
-        manager.getTransaction().begin();
+        user.setLogin("testNew");
+        dao.updateUser(user);
+
         try {
-            User persistentUser = manager.createQuery("from User where id = :id", User.class)
-                    .setParameter("id", user.getId())
+            manager.createQuery("from User where login = :newLogin", User.class)
+                    .setParameter("newLogin", "testNew")
                     .getSingleResult();
-            persistentUser.setLogin("testNew");
-            dao.updateUser(persistentUser);
-            manager.getTransaction().commit();
-        } catch(Exception e) {
-            manager.getTransaction().rollback();
-            Assert.assertTrue(false);
-            throw e;
+        } catch(NoResultException e) {
+            fail();
         }
 
-        User found = manager.createQuery("from User where login = :newLogin", User.class)
-                .setParameter("newLogin", "testNew")
-                .getSingleResult();
-        Assert.assertNotNull(found);
         try {
             manager.createQuery("from User where login = :newLogin", User.class)
                     .setParameter("newLogin", "test")
                     .getSingleResult();
-            Assert.assertTrue(false);
+            fail();
         } catch(NoResultException e) {
-            Assert.assertTrue(true);
         }
+
     }
 
     @Test

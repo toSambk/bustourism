@@ -2,29 +2,36 @@ package ru.bustourism.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.bustourism.entities.User;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
 public class UserDAO {
 
-    @Autowired
-    private final EntityManager manager;
+    @PersistenceContext
+    private EntityManager manager;
+
+    private UserDAO(){}
 
     public UserDAO(EntityManager manager) {
         this.manager = manager;
     }
 
+    @Transactional
     public void createUser(User user) {
         manager.persist(user);
     }
 
+    @Transactional
     public void deleteUser(User user) {
-        manager.remove(user);
+        manager.remove(manager.contains(user)?user:manager.merge(user));
     }
 
+    @Transactional
     public void updateUser(User user) {
         manager.merge(user);
     }

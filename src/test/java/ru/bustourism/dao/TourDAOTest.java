@@ -1,31 +1,26 @@
 package ru.bustourism.dao;
 
-
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import ru.bustourism.config.AppConfig;
+import ru.bustourism.config.TestConfig;
 import ru.bustourism.entities.Tour;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.NoResultException;
-import javax.persistence.Persistence;
+
+import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = AppConfig.class)
+@ContextConfiguration(classes = TestConfig.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class TourDAOTest {
 
     @Autowired
-    private EntityManager manager;
+    public EntityManager manager;
 
     @Autowired
     private TourDAO dao;
@@ -37,7 +32,7 @@ public class TourDAOTest {
         try {
             dao.createTour(tour);
             manager.getTransaction().commit();
-        } catch(Exception e) {
+        } catch (Exception e) {
             manager.getTransaction().rollback();
             throw e;
         }
@@ -55,14 +50,15 @@ public class TourDAOTest {
             manager.getTransaction().rollback();
             throw e;
         }
-        manager.getTransaction().begin();
-        try{
+
             dao.deleteTour(tour);
-            manager.getTransaction().commit();
-        } catch (Exception expected) {
-            manager.getTransaction().rollback();
+
+        try {
+            manager.createQuery("from Tour where id = :id")
+                    .setParameter("id", tour.getId()).getSingleResult();
             Assert.assertTrue(false);
-            throw expected;
+        } catch (NoResultException e) {
+            Assert.assertTrue(true);
         }
 
     }
@@ -92,8 +88,6 @@ public class TourDAOTest {
             Assert.assertTrue(false);
             throw e;
         }
-        Tour found = manager.find(Tour.class, persistentTour.getId());
-        Assert.assertNotNull(found);
         try {
             manager.createQuery("from Tour where name = :name", Tour.class)
                     .setParameter("name", "testname")
@@ -107,7 +101,6 @@ public class TourDAOTest {
 
     @Test
     public void findById() {
-
         Tour tour = new Tour("testname", 50, 10, 4, new Date());
         manager.getTransaction().begin();
         try {
@@ -124,7 +117,6 @@ public class TourDAOTest {
 
     @Test
     public void findByName() {
-
         Tour tour = new Tour("testname", 50, 10, 4, new Date());
         manager.getTransaction().begin();
         try {
@@ -134,9 +126,7 @@ public class TourDAOTest {
             manager.getTransaction().rollback();
             throw e;
         }
-
         Tour found = dao.findByName("testname");
-
         Assert.assertEquals(manager.createQuery("from Tour where name = :name", Tour.class)
                 .setParameter("name", "testname")
                 .getSingleResult().getId(), found.getId());
@@ -157,7 +147,6 @@ public class TourDAOTest {
             manager.getTransaction().rollback();
             throw e;
         }
-
         List<Tour> toursAbove4 = dao.findToursByRating(4);
         List<Tour> toursAbove1 = dao.findToursByRating(1);
         Assert.assertEquals(toursAbove4.size(), 1);
@@ -168,7 +157,6 @@ public class TourDAOTest {
 
     @Test
     public void findAllTours() {
-
         Tour goodTour = new Tour("goodTour", 100, 50, 5, new Date());
         Tour mediumTour = new Tour("mediumTour", 100, 70, 3, new Date());
         Tour badTour = new Tour("badTour", 50, 5, 1, new Date());
@@ -183,13 +171,10 @@ public class TourDAOTest {
             manager.getTransaction().rollback();
             throw e;
         }
-
         List<Tour> users = manager.createQuery("from Tour", Tour.class).getResultList();
-
         Assert.assertEquals(users.size(), 3);
         Assert.assertEquals(users.stream().filter(x-> x.getId() == badTour.getId()).findFirst().get().getId(), badTour.getId());
         Assert.assertEquals(users.stream().filter(x-> x.getId() == mediumTour.getId()).findFirst().get().getId(), mediumTour.getId());
         Assert.assertEquals(users.stream().filter(x-> x.getId() == goodTour.getId()).findFirst().get().getId(), goodTour.getId());
-
     }
 }

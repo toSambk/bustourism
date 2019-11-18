@@ -12,13 +12,8 @@ import org.springframework.web.servlet.view.JstlView;
 public class WebConfig implements WebMvcConfigurer {
 
     @Override
-    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-        configurer.enable();
-    }
-
-    @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
-        registry.jsp("pages/", ".jsp").viewClass(JstlView.class);
+        registry.jsp("", ".jsp").viewClass(JstlView.class);
     }
 
 

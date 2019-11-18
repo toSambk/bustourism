@@ -8,7 +8,7 @@ public class MainPageController {
 
     @GetMapping(path = "/")
     public String mainPage() {
-        return "mainPage";
+        return "/pages/mainPage";
     }
 
 }

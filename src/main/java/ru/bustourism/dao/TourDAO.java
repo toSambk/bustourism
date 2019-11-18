@@ -1,32 +1,35 @@
 package ru.bustourism.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.bustourism.entities.Tour;
-import ru.bustourism.entities.User;
-
 import javax.persistence.EntityManager;
-import java.util.Date;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
 public class TourDAO {
 
-    private final EntityManager manager;
+    @PersistenceContext
+    private EntityManager manager;
 
-    @Autowired
+    private TourDAO(){}
+
     public TourDAO(EntityManager manager) {
         this.manager = manager;
     }
 
+    @Transactional
     public void createTour(Tour tour) {
         manager.persist(tour);
     }
 
+    @Transactional
     public void deleteTour(Tour tour) {
-        manager.remove(tour);
+        manager.remove(manager.contains(tour)?tour:manager.merge(tour));
     }
 
+    @Transactional
     public void updateTour(Tour tour) {
         manager.merge(tour);
     }
