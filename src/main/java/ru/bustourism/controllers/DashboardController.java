@@ -31,7 +31,7 @@ public class DashboardController {
             List<Tour> tours = tourDAO.findAllTours();
             model.addAttribute("tours", tours);
             model.addAttribute("user", user);
-            return "/dashboard.jsp";
+            return "dashboard";
         } catch(NoResultException notFound) {
             return "mainPage";
         }

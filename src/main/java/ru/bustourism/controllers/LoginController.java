@@ -3,10 +3,17 @@ package ru.bustourism.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.bustourism.dao.UserDAO;
 import ru.bustourism.entities.User;
+import ru.bustourism.forms.RegistrationFormBean;
+
 import javax.persistence.NoResultException;
 import javax.servlet.http.HttpSession;
 
@@ -18,7 +25,6 @@ public class LoginController {
 
     @PostMapping(path = "/login")
     public String login(HttpSession session, @RequestParam String login, @RequestParam String password, ModelMap model) {
-
         try {
             User found = userDAO.findByLoginAndPassword(login, password);
             session.setAttribute("userId", found.getId());
@@ -27,6 +33,44 @@ public class LoginController {
             model.addAttribute("login", login);
             return "mainPage";
         }
+    }
+
+    @GetMapping(path="/register")
+    public String registrationPage() {
+        return "registration";
+    }
+
+    @PostMapping(path = "/register")
+    public String registration(@Validated @ModelAttribute("form") RegistrationFormBean form, BindingResult result) {
+
+        if (form.getPasswordConfirmation() == null || !form.getPassword().equals(form.getPasswordConfirmation())) {
+            result.addError(new FieldError("form", "passwordConfirmation", "Поля с подтверждением пароля не совпадают"));
+        }
+        try {
+            userDAO.createUser(new User(form.getLogin(), form.getPassword(), false));
+        } catch(Exception e) {
+            result.addError(new FieldError("form", "login", "Пользователь с таким логином уже существует"));
+        }
+
+        if(result.hasErrors()) {
+            return "registration";
+        }
+
+        return "redirect:/";
 
     }
+
+    @ModelAttribute("form")
+    public RegistrationFormBean newFormBean() {
+        RegistrationFormBean bean = new RegistrationFormBean();
+        bean.setLogin("");
+        bean.setPassword("");
+        bean.setPasswordConfirmation("");
+        return bean;
+    }
+
+
+
+
+
 }

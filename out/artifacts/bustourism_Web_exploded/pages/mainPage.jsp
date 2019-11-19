@@ -4,14 +4,13 @@
 
 <html lang="en">
 <head>
+    <style><jsp:directive.include file="/styles/style.css" /></style>
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <link href="${pageContext.request.contextPath}/styles/style.css" rel="stylesheet" type="text/css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Список всех туров</title>
 </head>
 <body>
-<p>fefef "${pageContext.request.contextPath}"</p>
 <section class="main">
 <c:if test="${empty sessionScope['userId']}">
         <form class="form-1" method="post" action="/login">
@@ -25,6 +24,9 @@
                 </p>
                 <p class="submit">
                     <button type="submit" name="submit" value="Войти"><i class="icon-arrow-right icon-large"></i></button>
+                </p>
+                <p>
+                    <a href="/register">Регистрация нового пользователя</a>
                 </p>
         </form>
 </c:if>

@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void configureViewResolvers(ViewResolverRegistry registry) {
-        registry.jsp("", ".jsp").viewClass(JstlView.class);
+        registry.jsp("/pages/", ".jsp").viewClass(JstlView.class);
     }
 
 

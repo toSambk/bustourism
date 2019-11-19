@@ -7,6 +7,7 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <title>Список туров</title>
+    <style><jsp:directive.include file="/styles/stylesDashboard.css"/></style>
     <link rel="stylesheet" href="styles/stylesDashboard.css" type="text/css">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,300" type="text/css">
 </head>
@@ -20,9 +21,9 @@
     </header>
     <nav>
         <ul class="top-menu">
-            <li><a href="/">Страница авторизации</a></li>
+            <li><a href="/" onclick="${sessionScope.clear()}">Страница авторизации</a></li>
             <li class="active"><a href="/dashboard">Список автобусных туров</a></li>
-            <li><a href="/cabinet?id=${user.id}">Личный кабинет</a></li>
+            <li><a href="/cabinet">Личный кабинет</a></li>
         </ul>
     </nav>
     <div id="heading">
@@ -32,7 +33,7 @@
         <nav>
             <ul class="aside-menu">
                 <c:forEach items="${tours}" var="tour">
-                    <li><a href="/tour?id=${tour.id}">${tour.name}</a></li>
+                    <li><a href="/tour?tourId=${tour.id}">${tour.name}</a></li>
                 </c:forEach>
             </ul>
         </nav>

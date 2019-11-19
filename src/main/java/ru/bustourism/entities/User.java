@@ -27,7 +27,7 @@ public class User implements Serializable {
     @Column(name = "PASSWORD", length = 32, nullable = false)
     private String password;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "USERS_TOURS", joinColumns = {@JoinColumn(referencedColumnName = "ID")},
                                     inverseJoinColumns = {@JoinColumn(referencedColumnName = "ID")})
     private List<Tour> tours;

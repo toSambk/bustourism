@@ -17,17 +17,12 @@ public class CabinetController {
     private UserDAO userDAO;
 
     @GetMapping(path = "/cabinet")
-    public String cabinet(HttpSession session, @RequestParam int id, ModelMap model) {
+    public String cabinet(HttpSession session, ModelMap model) {
         int sessionId = (int) session.getAttribute("userId");
 
-        if (sessionId == id) {
             User byId = userDAO.findById(sessionId);
             model.addAttribute("user", byId);
-            return "/cabinet.jsp";
-        } else {
-            session.invalidate();
-            return "/mainPage.jsp";
-        }
+            return "cabinet";
 
     }
 

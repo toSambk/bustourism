@@ -1,6 +1,6 @@
-@import url('demo.css');
-@import url('font-awesome.css');
 @import url("https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css");
+@import "demo.css";
+@import "font-awesome.css";
 /* GLOBALS */
 
 *,
