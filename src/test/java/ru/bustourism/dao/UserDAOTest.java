@@ -31,7 +31,6 @@ public class UserDAOTest {
     @Autowired
     private UserDAO dao;
 
-
     @Test
     public void createUser() {
 

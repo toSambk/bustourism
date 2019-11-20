@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "USERS")
+@Table(name = "users")
 public class User implements Serializable {
 
     public User(){}
@@ -21,19 +21,27 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "LOGIN", length = 32, unique = true, nullable = false)
+    @Column(name = "login", length = 32, unique = true, nullable = false)
     private String login;
 
-    @Column(name = "PASSWORD", length = 32, nullable = false)
+    @Column(name = "password", length = 32, nullable = false)
     private String password;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "USERS_TOURS", joinColumns = {@JoinColumn(referencedColumnName = "ID")},
+    @JoinTable(name = "users_tours", joinColumns = {@JoinColumn(referencedColumnName = "ID")},
                                     inverseJoinColumns = {@JoinColumn(referencedColumnName = "ID")})
     private List<Tour> tours;
 
-    @Column(name = "ADMINISTRATOR", nullable = false)
+    @Column(name = "administrator", nullable = false)
     private boolean administrator;
+
+
+
+
+
+
+
+
 
 
     public String getLogin() {

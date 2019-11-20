@@ -5,11 +5,12 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import ru.bustourism.dao.AssessmentDAO;
 import ru.bustourism.dao.TourDAO;
 import ru.bustourism.dao.UserDAO;
+import ru.bustourism.entities.Assessment;
 import ru.bustourism.entities.Tour;
 import ru.bustourism.entities.User;
-
 import java.util.Arrays;
 import java.util.Date;
 
@@ -21,6 +22,9 @@ public class StartupListener {
 
     @Autowired
     private UserDAO userDAO;
+
+    @Autowired
+    private AssessmentDAO assessmentDAO;
 
     @EventListener
     @Transactional
@@ -42,6 +46,7 @@ public class StartupListener {
         tourDAO.createTour(badTour);
         tourDAO.createTour(mediumTour);
         tourDAO.createTour(goodTour);
+//        assessmentDAO.getAssessment(user1.getId(), goodTour.getId()).getValue();
     }
 
 }

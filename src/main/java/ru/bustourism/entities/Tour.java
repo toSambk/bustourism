@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "TOURS")
+@Table(name = "tours")
 public class Tour implements Serializable {
 
     public Tour(){}
@@ -26,27 +26,33 @@ public class Tour implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "NAME", nullable = false, unique = true)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "MAX_NUMBER_OF_SEATS", nullable = false)
+    @Column(name = "max_number_of_seats", nullable = false)
     @Positive
     private int maxNumberOfSeats;
 
-    @Column(name = "CUR_NUMBER_OF_SEATS")
+    @Column(name = "cur_number_of_seats")
     @Positive
     private int curNumberOfSeats;
 
-    @Column(name = "RATING", nullable = false, length = 5)
+    @Column(name = "rating", nullable = false, length = 5)
     @Positive
     private int rating;
 
-    @Column(name = "DATE", nullable = false)
+    @Column(name = "date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
     @ManyToMany(mappedBy = "tours")
     private List<User> users;
+
+
+
+
+
+
 
     public String getName() {
         return name;
@@ -103,4 +109,5 @@ public class Tour implements Serializable {
     public void setDate(Date date) {
         this.date = date;
     }
+
 }

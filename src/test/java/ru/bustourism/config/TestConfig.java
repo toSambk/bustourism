@@ -19,7 +19,15 @@ import javax.persistence.PersistenceContext;
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebConfig.class),
         @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = StartupListener.class)
 })
+
 public class TestConfig {
+
+//    @Bean
+//    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
+//        LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
+//        bean.setPersistenceUnitName("BusTourismAppPersistenceUnit");
+//        return bean;
+//    }
 
     @Bean
     public EntityManagerFactory factory() {

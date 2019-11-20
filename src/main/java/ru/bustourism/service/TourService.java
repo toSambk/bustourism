@@ -21,8 +21,12 @@ public class TourService {
     public void addTourToUser(int userId, int tourId) {
         User user = userDAO.findById(userId);
         List<Tour> tours = user.getTours();
-        tours.add(tourDAO.findById(tourId));
+        Tour found = tourDAO.findById(tourId);
+        int curNumberOfSeats = found.getCurNumberOfSeats();
+        found.setCurNumberOfSeats(--curNumberOfSeats);
+        tours.add(found);
         user.setTours(tours);
         userDAO.updateUser(user);
     }
+
 }
