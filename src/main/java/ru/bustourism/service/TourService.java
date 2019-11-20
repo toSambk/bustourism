@@ -27,6 +27,7 @@ public class TourService {
         tours.add(found);
         user.setTours(tours);
         userDAO.updateUser(user);
+        tourDAO.updateTour(found);
     }
 
 }

@@ -10,6 +10,8 @@ import ru.bustourism.entities.Tour;
 
 import javax.persistence.NoResultException;
 import java.util.List;
+import java.util.OptionalDouble;
+import java.util.stream.DoubleStream;
 
 @Service
 public class AssessmentService {
@@ -26,5 +28,13 @@ public class AssessmentService {
             assessmentDAO.createAssessment(new Assessment(userId, tourId, assessment));
         }
     }
+
+    public double getTourRating(int tourId) {
+        OptionalDouble average = assessmentDAO.getTourAssessments(tourId).stream()
+                .mapToDouble(x -> x.getValue()).average();
+        return  average.isPresent()? average.getAsDouble() : 0;
+    }
+
+
 
 }

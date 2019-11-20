@@ -12,11 +12,12 @@ import ru.bustourism.dao.AssessmentDAO;
 import ru.bustourism.entities.Assessment;
 import ru.bustourism.entities.Tour;
 import ru.bustourism.entities.User;
-
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 
@@ -34,7 +35,7 @@ public class AssessmentServiceTest {
     @Autowired
     private AssessmentService assessmentService;
 
-    private User user1, user2;
+    private User user1, user2, user3;
 
     private Tour goodTour, mediumTour;
 
@@ -42,6 +43,7 @@ public class AssessmentServiceTest {
     public void setup() {
         user1 = new User("user1", "123", false);
         user2 = new User("user2", "123", false);
+        user3 = new User("user3", "123", false);
         goodTour = new Tour("goodTour", 100, 50, 5, new Date());
         mediumTour = new Tour("mediumTour", 100, 70, 3, new Date());
         user1.setTours(Arrays.asList(goodTour, mediumTour));
@@ -75,7 +77,6 @@ public class AssessmentServiceTest {
     public void assessTourByUserChange() {
 
         assessmentService.assessTourByUser(user1.getId(), goodTour.getId(), 5);
-
         assessmentService.assessTourByUser(user1.getId(), goodTour.getId(), 3);
 
         try {
@@ -86,7 +87,25 @@ public class AssessmentServiceTest {
             fail();
         }
 
+    }
 
+    @Test
+    public void getTourRating() {
+
+        Assessment assessment1 = new Assessment(user1.getId(), goodTour.getId(), 4);
+        Assessment assessment2 = new Assessment(user2.getId(), goodTour.getId(), 3);
+        Assessment assessment3 = new Assessment(user3.getId(), goodTour.getId(), 1);
+        Assessment assessment4 = new Assessment(user1.getId(), mediumTour.getId(), 2);
+        assessmentDAO.createAssessment(assessment1);
+        assessmentDAO.createAssessment(assessment2);
+        assessmentDAO.createAssessment(assessment3);
+        assessmentDAO.createAssessment(assessment4);
+
+        double tourRating = assessmentService.getTourRating(goodTour.getId());
+
+        assertEquals(2.6, tourRating, 0.1);
+        assertNotEquals(3, tourRating, 0.1);
+        assertNotEquals(2, tourRating, 0.1);
     }
 
 }

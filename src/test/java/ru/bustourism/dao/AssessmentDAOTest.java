@@ -16,6 +16,8 @@ import javax.persistence.NoResultException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -29,13 +31,15 @@ public class AssessmentDAOTest {
     @Autowired
     private AssessmentDAO assessmentDAO;
 
-    private User user1;
+    private User user1, user2, user3;
 
     private Tour goodTour, mediumTour;
 
     @Before
     public void setup() {
         user1 = new User("user1", "123", false);
+        user2 = new User("user2", "123", false);
+        user3 = new User("user3", "123", false);
         goodTour = new Tour("goodTour", 100, 50, 5, new Date());
         mediumTour = new Tour("mediumTour", 100, 70, 3, new Date());
         user1.setTours(Arrays.asList(goodTour, mediumTour));
@@ -187,6 +191,29 @@ public class AssessmentDAOTest {
             fail();
         } catch (NoResultException e) {
         }
+    }
+
+    @Test
+    public void getTourAssessments() {
+        Assessment assessment1 = new Assessment(user1.getId(), goodTour.getId(), 4);
+        Assessment assessment2 = new Assessment(user2.getId(), goodTour.getId(), 4);
+        Assessment assessment3 = new Assessment(user3.getId(), goodTour.getId(), 4);
+        Assessment assessment4 = new Assessment(user1.getId(), mediumTour.getId(), 2);
+        List<Assessment> expected = Arrays.asList(assessment1, assessment2, assessment3);
+
+        assessmentDAO.createAssessment(assessment1);
+        assessmentDAO.createAssessment(assessment2);
+        assessmentDAO.createAssessment(assessment3);
+        assessmentDAO.createAssessment(assessment4);
+
+        List<Assessment> tourAssessments = assessmentDAO.getTourAssessments(goodTour.getId());
+
+        assertEquals(3, tourAssessments.size());
+
+        tourAssessments.forEach(x-> {
+            if(x.getId() != expected.stream().filter(y -> y.getId() == x.getId()).findFirst().get().getId()) fail();
+        });
 
     }
+
 }

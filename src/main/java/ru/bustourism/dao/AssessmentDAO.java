@@ -3,10 +3,9 @@ package ru.bustourism.dao;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.bustourism.entities.Assessment;
-
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Repository
 public class AssessmentDAO {
@@ -14,7 +13,6 @@ public class AssessmentDAO {
     @PersistenceContext
     private EntityManager manager;
 
-    @Transactional
     public Assessment findAssessmentByUserAndTourId(int userId, int tourId) {
         return manager.createQuery("from Assessment where userId = :userId AND tourId = :tourId", Assessment.class)
                 .setParameter("userId", userId)
@@ -22,7 +20,6 @@ public class AssessmentDAO {
                 .getSingleResult();
     }
 
-    @Transactional
     public Assessment findAssessmentById(int id) {
         return manager.createQuery("from Assessment where id = :id", Assessment.class)
                 .setParameter("id", id)
@@ -42,6 +39,12 @@ public class AssessmentDAO {
     @Transactional
     public void deleteAssessment(Assessment assessment) {
         manager.remove(manager.contains(assessment)?assessment:manager.merge(assessment));
+    }
+
+    public List<Assessment> getTourAssessments(int tourId) {
+        return manager.createQuery("from Assessment where tourId = :tourId", Assessment.class )
+                .setParameter("tourId", tourId)
+                .getResultList();
     }
 
 }
