@@ -68,7 +68,7 @@ public class TourService {
         if (amount > tour.getCurNumberOfSeats()) throw new NotEnoughSeatsException();
         try {
             Seat found = seatDAO.findSeatByUserAndTourId(userId, tourId);
-            found.setQuantity(amount);
+            found.setQuantity(found.getQuantity() + amount);
             seatDAO.updateSeat(found);
         } catch (NoResultException e) {
             seatDAO.createSeat(new Seat(userId, tourId, amount));

@@ -23,16 +23,15 @@
 </p>
 <p>
 
-<%--    <form:form method="post" modelAttribute="acceptForm">--%>
-<%--        <form:label path="hiddenField"/>--%>
-<%--        <form:errors path="hiddenField" cssStyle="color: red"/>--%>
-<%--        <input type="submit" value="Приобрести тур"--%>
-<%--    </form:form>--%>
+    <form:form action="/tour" method="post" modelAttribute="acceptForm">
+       <p>
+        <form:input type="text" path="quantity"/>
+        <form:errors path="quantity" cssStyle="color: red"/>
+        </p>
+        <input type="hidden" name="tourId" value="${tour.id}"/>
+        <input type="submit" value="Приобрести тур"/>
+    </form:form>
 
-    <form method="post" action="/tour">
-        <input type = "hidden" name="tourId" value="${tour.id}">
-        <button type="submit" name="submit" value="Приобрести тур">Приобрести тур</button>
-    </form>
 </p>
 <p>
     <a href="/dashboard">Назад к ленте</a>

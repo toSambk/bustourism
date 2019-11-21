@@ -21,7 +21,7 @@
     </header>
     <nav>
         <ul class="top-menu">
-            <li><a href="/" onclick="${sessionScope.clear()}">Страница авторизации</a></li>
+            <li><a href="/sessionclear">Страница авторизации</a></li>
             <li class="active"><a href="/dashboard">Список автобусных туров</a></li>
             <li><a href="/cabinet">Личный кабинет</a></li>
         </ul>

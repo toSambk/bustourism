@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.bustourism.dao.TourDAO;
 import ru.bustourism.dao.UserDAO;
 import ru.bustourism.entities.Tour;
+import ru.bustourism.exceptions.NotEnoughSeatsException;
 import ru.bustourism.forms.AcceptingTourBean;
 import ru.bustourism.service.TourService;
 
@@ -41,23 +42,26 @@ public class TourController {
     }
 
     @PostMapping(path = "/tour")
-    public String buyTour(HttpSession session, @RequestParam int tourId, ModelMap model) {
+    public String buyTour(HttpSession session, @Validated @ModelAttribute("acceptForm") AcceptingTourBean form, BindingResult result,
+                          @RequestParam int tourId, ModelMap model) {
         int userId = (int) session.getAttribute("userId");
-
-        if(userDAO.findById(userId).getTours().stream().anyMatch(x-> x.getId() == tourId)) {
-            System.out.println("!!!!!!");
-        } else {
+        if(!userDAO.findById(userId).getTours().stream().anyMatch(x-> x.getId() == tourId)) {
             tourService.addTourToUser(userId, tourId);
         }
+        try {
+            tourService.buySeats(userId, tourId, Integer.parseInt(form.getQuantity()));
+        } catch(NotEnoughSeatsException e) {
+            result.addError(new FieldError("acceptForm", "quantity", "Недостаточно свободных мест"));
+        } catch (NumberFormatException e) {}
         model.addAttribute("tour", tourDAO.findById(tourId));
         return "tour";
     }
 
-//    @ModelAttribute("acceptForm")
-//    public AcceptingTourBean newAcceptingTourBean() {
-//        AcceptingTourBean acceptingTourBean =  new AcceptingTourBean();
-//        acceptingTourBean.setHiddenField("");
-//        return acceptingTourBean;
-//    }
+    @ModelAttribute("acceptForm")
+    public AcceptingTourBean newAcceptingTourBean() {
+        AcceptingTourBean acceptingTourBean =  new AcceptingTourBean();
+        acceptingTourBean.setQuantity("1");
+        return acceptingTourBean;
+    }
 
 }
