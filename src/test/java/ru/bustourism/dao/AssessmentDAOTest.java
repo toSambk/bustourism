@@ -55,12 +55,10 @@ public class AssessmentDAOTest {
             manager.getTransaction().rollback();
             throw e;
         }
-
     }
 
     @Test
     public void createAssessment() {
-
         Assessment assessment = new Assessment(user1.getId(), goodTour.getId(), 3);
         manager.getTransaction().begin();
         try {
@@ -71,19 +69,15 @@ public class AssessmentDAOTest {
             fail();
             throw e;
         }
-
         Assessment found = manager.createQuery("from Assessment where id = :id", Assessment.class)
                 .setParameter("id", assessment.getId())
                 .getSingleResult();
-
         assertNotNull(found);
         assertEquals(found.getId(), assessment.getId());
-
     }
 
     @Test
     public void updateAssessment() {
-
         Assessment assessment = new Assessment(user1.getId(), goodTour.getId(), 3);
         manager.getTransaction().begin();
         try {
@@ -94,9 +88,7 @@ public class AssessmentDAOTest {
             fail();
             throw e;
         }
-
         assessment.setValue(5);
-
         manager.getTransaction().begin();
         try {
             assessmentDAO.updateAssessment(assessment);
@@ -106,23 +98,19 @@ public class AssessmentDAOTest {
             fail();
             throw e;
         }
-
         Assessment found = manager.createQuery("from Assessment where id = :id", Assessment.class)
                 .setParameter("id", assessment.getId())
                 .getSingleResult();
-
         assertNotNull(found);
         assertEquals(found.getId(), assessment.getId());
         assertEquals(found.getValue(), 5);
         assertNotEquals(found.getValue(), 3);
-
     }
 
     @Test
     public void findAssessmentByUserAndTourId() {
         Assessment assessment1 = new Assessment(user1.getId(), goodTour.getId(), 3);
         Assessment assessment2 = new Assessment(user1.getId(), mediumTour.getId(), 2);
-
         manager.getTransaction().begin();
         try {
             manager.persist(assessment1);
@@ -133,7 +121,6 @@ public class AssessmentDAOTest {
             fail();
             throw e;
         }
-
         Assessment found1 = assessmentDAO.findAssessmentByUserAndTourId(assessment1.getUserId(), assessment1.getTourId());
         Assessment found2 = assessmentDAO.findAssessmentByUserAndTourId(assessment2.getUserId(), assessment2.getTourId());
         assertNotNull(found1);
@@ -154,7 +141,6 @@ public class AssessmentDAOTest {
             fail();
             throw e;
         }
-
         Assessment found = assessmentDAO.findAssessmentById(assessment.getId());
         assertNotNull(found);
         assertEquals(assessment.getId(), found.getId());
@@ -162,7 +148,6 @@ public class AssessmentDAOTest {
 
     @Test
     public void deleteAssessment() {
-
         Assessment assessment = new Assessment(user1.getId(), goodTour.getId(), 3);
         manager.getTransaction().begin();
         try {
@@ -173,17 +158,7 @@ public class AssessmentDAOTest {
             fail();
             throw e;
         }
-
-        manager.getTransaction().begin();
-        try {
             assessmentDAO.deleteAssessment(assessment);
-            manager.getTransaction().commit();
-        } catch (Exception e) {
-            manager.getTransaction().rollback();
-            fail();
-            throw e;
-        }
-
         try {
             Assessment found = manager.createQuery("from Assessment where id = :id", Assessment.class)
                     .setParameter("id", assessment.getId())
@@ -200,20 +175,15 @@ public class AssessmentDAOTest {
         Assessment assessment3 = new Assessment(user3.getId(), goodTour.getId(), 4);
         Assessment assessment4 = new Assessment(user1.getId(), mediumTour.getId(), 2);
         List<Assessment> expected = Arrays.asList(assessment1, assessment2, assessment3);
-
         assessmentDAO.createAssessment(assessment1);
         assessmentDAO.createAssessment(assessment2);
         assessmentDAO.createAssessment(assessment3);
         assessmentDAO.createAssessment(assessment4);
-
         List<Assessment> tourAssessments = assessmentDAO.getTourAssessments(goodTour.getId());
-
         assertEquals(3, tourAssessments.size());
-
         tourAssessments.forEach(x-> {
             if(x.getId() != expected.stream().filter(y -> y.getId() == x.getId()).findFirst().get().getId()) fail();
         });
-
     }
 
 }

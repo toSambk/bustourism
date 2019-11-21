@@ -50,9 +50,7 @@ public class TourDAOTest {
             manager.getTransaction().rollback();
             throw e;
         }
-
             dao.deleteTour(tour);
-
         try {
             manager.createQuery("from Tour where id = :id")
                     .setParameter("id", tour.getId()).getSingleResult();
@@ -60,7 +58,6 @@ public class TourDAOTest {
         } catch (NoResultException e) {
             Assert.assertTrue(true);
         }
-
     }
 
     @Test
@@ -135,7 +132,6 @@ public class TourDAOTest {
 
     @Test
     public void findToursByRating() {
-
         Tour goodTour = new Tour("good", 50, 10, 4, new Date());
         Tour badTour = new Tour("bad", 50, 10, 2, new Date());
         manager.getTransaction().begin();
@@ -160,7 +156,6 @@ public class TourDAOTest {
         Tour goodTour = new Tour("goodTour", 100, 50, 5, new Date());
         Tour mediumTour = new Tour("mediumTour", 100, 70, 3, new Date());
         Tour badTour = new Tour("badTour", 50, 5, 1, new Date());
-
         manager.getTransaction().begin();
         try {
             manager.persist(goodTour);

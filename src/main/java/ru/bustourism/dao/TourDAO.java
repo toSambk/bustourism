@@ -46,7 +46,7 @@ public class TourDAO {
                 .getSingleResult();
     }
 
-    public List<Tour> findToursByRating(int rating) {
+    public List<Tour> findToursByRating(double rating) {
         return manager.createQuery("from Tour where rating >= :rating", Tour.class)
                 .setParameter("rating", rating)
                 .getResultList();

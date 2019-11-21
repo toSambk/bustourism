@@ -39,13 +39,13 @@ public class Tour implements Serializable {
 
     @Column(name = "rating", nullable = false, length = 5)
     @Positive
-    private int rating;
+    private double rating;
 
     @Column(name = "date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
-    @ManyToMany(mappedBy = "tours")
+    @ManyToMany(mappedBy = "tours", fetch = FetchType.EAGER)
     private List<User> users;
 
 
@@ -78,11 +78,11 @@ public class Tour implements Serializable {
         this.curNumberOfSeats = curNumberOfSeats;
     }
 
-    public int getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 
