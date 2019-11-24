@@ -7,7 +7,7 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <title>Список туров</title>
-    <style><jsp:directive.include file="/styles/stylesDashboard.css"/></style>
+    <link rel="stylesheet" type="text/css" href="resources/styles/stylesDashboard.css" />
     <link rel="stylesheet" href="styles/stylesDashboard.css" type="text/css">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,300" type="text/css">
 </head>
@@ -65,10 +65,10 @@
         <p>Добро пожаловать, ${user.login}!</p>
         <p>Выберите интересующий вас тур слева</p>
         <figure>
-            <img src="${pageContext.request.contextPath}/images/sample1.jpg" width="320" height="175" alt="">
+            <img src="${pageContext.request.contextPath}/resources/images/sample1.jpg" width="320" height="175" alt="">
         </figure>
         <figure>
-            <img src="${pageContext.request.contextPath}/images/sample2.jpg" width="320" height="175" alt="">
+            <img src="${pageContext.request.contextPath}/resources/images/sample2.jpg" width="320" height="175" alt="">
         </figure>
 
     </section>

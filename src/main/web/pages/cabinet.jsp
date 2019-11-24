@@ -6,7 +6,7 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <title>Список туров</title>
-    <style><jsp:directive.include file="/styles/stylesDashboard.css"/></style>
+    <link rel="stylesheet" type="text/css" href="resources/styles/stylesDashboard.css" />
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,300" type="text/css">
 
 

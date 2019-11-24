@@ -49,10 +49,10 @@ public class TourController {
             tourService.addTourToUser(userId, tourId);
         }
         try {
-            tourService.buySeats(userId, tourId, Integer.parseInt(form.getQuantity()));
+            tourService.buySeats(userId, tourId, form.getQuantity());
         } catch(NotEnoughSeatsException e) {
             result.addError(new FieldError("acceptForm", "quantity", "Недостаточно свободных мест"));
-        } catch (NumberFormatException e) {}
+        }
         model.addAttribute("tour", tourDAO.findById(tourId));
         return "tour";
     }
@@ -60,7 +60,7 @@ public class TourController {
     @ModelAttribute("acceptForm")
     public AcceptingTourBean newAcceptingTourBean() {
         AcceptingTourBean acceptingTourBean =  new AcceptingTourBean();
-        acceptingTourBean.setQuantity("1");
+        acceptingTourBean.setQuantity(1);
         return acceptingTourBean;
     }
 

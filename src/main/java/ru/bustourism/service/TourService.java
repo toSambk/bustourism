@@ -65,7 +65,7 @@ public class TourService {
 
     public void buySeats(int userId, int tourId, int amount) {
         Tour tour = tourDAO.findById(tourId);
-        if (amount > tour.getCurNumberOfSeats()) throw new NotEnoughSeatsException();
+        if (amount > tour.getCurNumberOfSeats() || amount < 1) throw new NotEnoughSeatsException();
         try {
             Seat found = seatDAO.findSeatByUserAndTourId(userId, tourId);
             found.setQuantity(found.getQuantity() + amount);
