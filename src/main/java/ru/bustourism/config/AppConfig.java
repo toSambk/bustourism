@@ -12,7 +12,7 @@ public class AppConfig {
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
         LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
-        bean.setPersistenceUnitName("BusTourismAppPersistenceUnit");
+        bean.setPersistenceUnitName("TestPersistenceUnitPostgres");
         return bean;
     }
 
