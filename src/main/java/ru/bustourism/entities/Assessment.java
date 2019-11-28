@@ -8,17 +8,19 @@ public class Assessment {
 
     public Assessment(){}
 
-    public Assessment(int userId, int tourId, int value) {
-        this.userId = userId;
-        this.tourId = tourId;
+    public Assessment(User user, Tour tour, int value) {
+        this.user = user;
+        this.tour = tour;
         this.value = value;
     }
 
-    @Column(name = "user_id")
-    private int userId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @Column(name = "tour_id")
-    private int tourId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "tour_id")
+    private Tour tour;
 
     @Id
     @Column(name = "id")
@@ -27,6 +29,8 @@ public class Assessment {
 
     @Column(name = "value")
     private int value;
+
+
 
 
     public int getValue() {
@@ -45,19 +49,20 @@ public class Assessment {
         this.id = id;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public int getTourId() {
-        return tourId;
+    public Tour getTour() {
+        return tour;
     }
 
-    public void setTourId(int tourId) {
-        this.tourId = tourId;
+    public void setTour(Tour tour) {
+        this.tour = tour;
     }
+
 }

@@ -48,6 +48,36 @@ public class Tour implements Serializable {
     @ManyToMany(mappedBy = "tours", fetch = FetchType.EAGER)
     private List<User> users;
 
+    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL)
+    private List<Seat> seats;
+
+    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL)
+    private List<Assessment> assessments;
+
+
+
+
+
+
+
+
+
+    public List<Assessment> getAssessments() {
+        return assessments;
+    }
+
+    public void setAssessments(List<Assessment> assessments) {
+        this.assessments = assessments;
+    }
+
+    public List<Seat> getSeats() {
+        return seats;
+    }
+
+    public void setSeats(List<Seat> seats) {
+        this.seats = seats;
+    }
+
 
 
 

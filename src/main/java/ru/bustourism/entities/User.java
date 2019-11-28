@@ -35,6 +35,12 @@ public class User implements Serializable {
     @Column(name = "administrator", nullable = false)
     private boolean administrator;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Assessment> assessments;
+
+    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL)
+    private List<Seat> seats;
+
 
 
 
@@ -84,4 +90,19 @@ public class User implements Serializable {
         this.administrator = administrator;
     }
 
+    public List<Assessment> getAssessments() {
+        return assessments;
+    }
+
+    public void setAssessments(List<Assessment> assessments) {
+        this.assessments = assessments;
+    }
+
+    public List<Seat> getSeats() {
+        return seats;
+    }
+
+    public void setSeats(List<Seat> seats) {
+        this.seats = seats;
+    }
 }

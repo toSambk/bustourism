@@ -13,6 +13,7 @@ import ru.bustourism.entities.User;
 import ru.bustourism.exceptions.NotEnoughSeatsException;
 
 import javax.persistence.NoResultException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.OptionalDouble;
 
@@ -36,6 +37,12 @@ public class TourService {
         Tour tour = tourDAO.findById(tourId);
         List<Tour> tours = user.getTours();
         List<User> users = tour.getUsers();
+        if(tours == null) {
+            tours = new ArrayList<Tour>();
+        }
+        if(users == null) {
+            users = new ArrayList<User>();
+        }
         tours.add(tour);
         users.add(user);
         user.setTours(tours);
@@ -50,7 +57,7 @@ public class TourService {
             found.setValue(assessment);
             assessmentDAO.updateAssessment(found);
         } catch (NoResultException e) {
-            assessmentDAO.createAssessment(new Assessment(userId, tourId, assessment));
+            assessmentDAO.createAssessment(new Assessment(userDAO.findById(userId), tourDAO.findById(tourId), assessment));
         }
         Tour found = tourDAO.findById(tourId);
         found.setRating(getTourRating(tourId));
@@ -71,7 +78,7 @@ public class TourService {
             found.setQuantity(found.getQuantity() + amount);
             seatDAO.updateSeat(found);
         } catch (NoResultException e) {
-            seatDAO.createSeat(new Seat(userId, tourId, amount));
+            seatDAO.createSeat(new Seat(userDAO.findById(userId), tourDAO.findById(tourId), amount));
         }
         int curNumberOfSeats = tour.getCurNumberOfSeats();
         tour.setCurNumberOfSeats(curNumberOfSeats - amount);

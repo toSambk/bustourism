@@ -7,21 +7,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 import ru.bustourism.config.TestConfig;
 import ru.bustourism.entities.Seat;
 import ru.bustourism.entities.Tour;
 import ru.bustourism.entities.User;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 import java.util.Date;
+
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+//@Ignore
 public class SeatDAOTest {
 
-    @Autowired
+    @PersistenceContext
     private EntityManager manager;
 
     @Autowired
@@ -34,53 +38,36 @@ public class SeatDAOTest {
     private Seat seat;
 
     @Before
+    @Transactional
     public void setup() {
         user1 = new User("user1", "123", false);
         goodTour = new Tour("goodTour", 100, 50, 5, new Date());
-        seat = new Seat(user1.getId(), goodTour.getId(), 5);
-        manager.getTransaction().begin();
-        try {
-            manager.persist(user1);
-            manager.persist(goodTour);
-            manager.getTransaction().commit();
-        } catch(Exception e) {
-            manager.getTransaction().rollback();
-            throw e;
-        }
+        seat = new Seat(user1, goodTour, 5);
+        manager.persist(user1);
+        manager.persist(goodTour);
     }
 
     @Test
+    @Transactional
     public void findSeatByUserAndTourId() {
-        Seat newseat = new Seat(user1.getId(), goodTour.getId(), 5);
-        manager.getTransaction().begin();
-        try {
-            manager.persist(newseat);
-            manager.getTransaction().commit();
-        } catch(Exception e) {
-            manager.getTransaction().rollback();
-            throw e;
-        }
+        Seat newseat = new Seat(user1, goodTour, 5);
+        manager.persist(newseat);
         Seat seatByUserAndTourId = seatDAO.findSeatByUserAndTourId(user1.getId(), goodTour.getId());
         assertNotNull(seatByUserAndTourId);
         assertEquals(5, seatByUserAndTourId.getQuantity());
     }
 
     @Test
+    @Transactional
     public void findSeatById() {
-        manager.getTransaction().begin();
-        try {
-            manager.persist(seat);
-            manager.getTransaction().commit();
-        } catch(Exception e) {
-            manager.getTransaction().rollback();
-            throw e;
-        }
+        manager.persist(seat);
         Seat seatById = seatDAO.findSeatById(seat.getId());
         assertNotNull(seatById);
         assertEquals(seat.getId(), seatById.getId());
     }
 
     @Test
+    @Transactional
     public void createSeat() {
         seatDAO.createSeat(seat);
         try {
@@ -93,15 +80,9 @@ public class SeatDAOTest {
     }
 
     @Test
+    @Transactional
     public void updateSeat() {
-        manager.getTransaction().begin();
-        try {
-            manager.persist(seat);
-            manager.getTransaction().commit();
-        } catch (Exception e) {
-            manager.getTransaction().rollback();
-            fail();
-        }
+        manager.persist(seat);
         seat.setQuantity(10);
         seatDAO.updateSeat(seat);
         try {
@@ -117,15 +98,9 @@ public class SeatDAOTest {
     }
 
     @Test
+    @Transactional
     public void deleteSeat() {
-        manager.getTransaction().begin();
-        try {
-            manager.persist(seat);
-            manager.getTransaction().commit();
-        } catch (Exception e) {
-            manager.getTransaction().rollback();
-            fail();
-        }
+        manager.persist(seat);
         seatDAO.deleteSeat(seat);
         try {
             manager.createQuery("from Seat where id = :id", Seat.class)

@@ -7,10 +7,8 @@ import java.io.IOException;
 @WebFilter(urlPatterns = "*")
 public class CharsetEncodingFilter implements Filter {
 
-
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
     }
 
     @Override
@@ -22,6 +20,6 @@ public class CharsetEncodingFilter implements Filter {
 
     @Override
     public void destroy() {
-
     }
+
 }

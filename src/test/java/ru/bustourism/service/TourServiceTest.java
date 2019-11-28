@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 import ru.bustourism.config.TestConfig;
 import ru.bustourism.dao.AssessmentDAO;
 import ru.bustourism.dao.SeatDAO;
@@ -20,7 +21,7 @@ import ru.bustourism.exceptions.NotEnoughSeatsException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import java.util.Arrays;
+import javax.persistence.PersistenceContext;
 import java.util.Date;
 import java.util.List;
 
@@ -32,7 +33,7 @@ import static org.junit.Assert.*;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class TourServiceTest {
 
-    @Autowired
+    @PersistenceContext
     private EntityManager manager;
 
     @Autowired
@@ -55,37 +56,33 @@ public class TourServiceTest {
     private Tour goodTour, mediumTour;
 
     @Before
+    @Transactional
     public void setup() {
         user1 = new User("user1", "123", false);
         user2 = new User("user2", "123", false);
         user3 = new User("user3", "123", false);
         goodTour = new Tour("goodTour", 100, 50, 5, new Date());
         mediumTour = new Tour("mediumTour", 100, 70, 3, new Date());
-        manager.getTransaction().begin();
-        try {
-            manager.persist(user1);
-            manager.persist(goodTour);
-            manager.persist(mediumTour);
-            manager.getTransaction().commit();
-        } catch(Exception e) {
-            manager.getTransaction().rollback();
-            throw e;
-        }
+        manager.persist(user1);
+        manager.persist(goodTour);
+        manager.persist(mediumTour);
     }
 
     @Test
+    @Transactional
     public void assessTourByUserNew() {
         tourService.assessTourByUser(user1.getId(), goodTour.getId(), 5);
         try {
             Assessment found = assessmentDAO.findAssessmentByUserAndTourId(user1.getId(), goodTour.getId());
             assertNotNull(found);
             assertEquals(5, found.getValue());
-        } catch(NoResultException e) {
+        } catch (NoResultException e) {
             fail();
         }
     }
 
     @Test
+    @Transactional
     public void assessTourByUserChange() {
         tourService.assessTourByUser(user1.getId(), goodTour.getId(), 5);
         tourService.assessTourByUser(user1.getId(), goodTour.getId(), 3);
@@ -93,17 +90,18 @@ public class TourServiceTest {
             Assessment found = assessmentDAO.findAssessmentByUserAndTourId(user1.getId(), goodTour.getId());
             assertNotNull(found);
             assertEquals(3, found.getValue());
-        } catch(NoResultException e) {
+        } catch (NoResultException e) {
             fail();
         }
     }
 
     @Test
+    @Transactional
     public void getTourRating() {
-        Assessment assessment1 = new Assessment(user1.getId(), goodTour.getId(), 4);
-        Assessment assessment2 = new Assessment(user2.getId(), goodTour.getId(), 3);
-        Assessment assessment3 = new Assessment(user3.getId(), goodTour.getId(), 1);
-        Assessment assessment4 = new Assessment(user1.getId(), mediumTour.getId(), 2);
+        Assessment assessment1 = new Assessment(user1, goodTour, 4);
+        Assessment assessment2 = new Assessment(user2, goodTour, 3);
+        Assessment assessment3 = new Assessment(user3, goodTour, 1);
+        Assessment assessment4 = new Assessment(user1, mediumTour, 2);
         assessmentDAO.createAssessment(assessment1);
         assessmentDAO.createAssessment(assessment2);
         assessmentDAO.createAssessment(assessment3);
@@ -115,32 +113,34 @@ public class TourServiceTest {
     }
 
     @Test
+    @Transactional
     public void addTourToUser() {
         tourService.addTourToUser(user1.getId(), goodTour.getId());
         List<Tour> tours = userDAO.findById(user1.getId()).getTours();
         List<User> users = tourDAO.findById(goodTour.getId()).getUsers();
         assertEquals(1, tours.size());
         assertEquals(1, users.size());
-
-        if(!tours.stream().anyMatch(x-> x.getId() == goodTour.getId()) && !users.stream().anyMatch(x-> x.getId() == user1.getId())) {
+        if (!tours.stream().anyMatch(x -> x.getId() == goodTour.getId()) && !users.stream().anyMatch(x -> x.getId() == user1.getId())) {
             fail();
         }
     }
 
     @Test
+    @Transactional
     public void buyTour() {
         tourService.buySeats(user1.getId(), goodTour.getId(), 10);
         Seat seat = seatDAO.findSeatByUserAndTourId(user1.getId(), goodTour.getId());
         assertNotNull(seat);
         assertEquals(10, seat.getQuantity());
-        assertEquals(user1.getId(), seat.getUserId());
-        assertEquals(goodTour.getId(), seat.getTourId());
+        assertEquals(user1.getId(), seat.getUser().getId());
+        assertEquals(goodTour.getId(), seat.getTour().getId());
         Tour newTour = tourDAO.findById(goodTour.getId());
         assertEquals(40, newTour.getCurNumberOfSeats());
         try {
             tourService.buySeats(user1.getId(), mediumTour.getId(), 80);
             fail();
-        } catch (NotEnoughSeatsException e) {}
+        } catch (NotEnoughSeatsException e) {
+        }
     }
 
 }

@@ -6,6 +6,7 @@ import ru.bustourism.entities.Seat;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+//NOT USED
 @Repository
 public class SeatDAO {
 
@@ -13,7 +14,7 @@ public class SeatDAO {
     private EntityManager manager;
 
     public Seat findSeatByUserAndTourId(int userId, int tourId) {
-        return manager.createQuery("from Seat where userId = :userId AND tourId = :tourId", Seat.class)
+        return manager.createQuery("from Seat where user.id = :userId AND tour.id = :tourId", Seat.class)
                 .setParameter("userId", userId)
                 .setParameter("tourId", tourId)
                 .getSingleResult();

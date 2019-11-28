@@ -22,21 +22,21 @@ import javax.persistence.PersistenceContext;
 
 public class TestConfig {
 
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
+        LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
+        bean.setPersistenceUnitName("TestPersistenceUnit");
+        return bean;
+    }
+
 //    @Bean
-//    public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
-//        LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
-//        bean.setPersistenceUnitName("BusTourismAppPersistenceUnit");
-//        return bean;
+//    public EntityManagerFactory factory() {
+//        return Persistence.createEntityManagerFactory("TestPersistenceUnit");
 //    }
-
-    @Bean
-    public EntityManagerFactory factory() {
-        return Persistence.createEntityManagerFactory("TestPersistenceUnit");
-    }
-
-    @Bean
-    public EntityManager manager(EntityManagerFactory factory) {
-        return factory.createEntityManager();
-    }
+//
+//    @Bean
+//    public EntityManager manager(EntityManagerFactory factory) {
+//        return factory.createEntityManager();
+//    }
 
 }

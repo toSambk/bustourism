@@ -8,9 +8,15 @@ public class Seat {
 
     public Seat(){}
 
-    public Seat(int userId, int tourId, int quantity) {
-        this.userId = userId;
-        this.tourId = tourId;
+//    public Seat(int userId, int tourId, int quantity) {
+//        this.userId = userId;
+//        this.tourId = tourId;
+//        this.quantity = quantity;
+//    }
+
+    public Seat(User user, Tour tour, int quantity) {
+        this.user = user;
+        this.tour = tour;
         this.quantity = quantity;
     }
 
@@ -18,32 +24,21 @@ public class Seat {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name = "user_id")
-    private int userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @Column(name = "tour_id")
-    private int tourId;
+    @ManyToOne
+    @JoinColumn(name = "tour_id")
+    private Tour tour;
 
     @Column(name = "quantity")
     private int quantity;
 
 
 
-    public int getUserId() {
-        return userId;
-    }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
 
-    public int getTourId() {
-        return tourId;
-    }
-
-    public void setTourId(int tourId) {
-        this.tourId = tourId;
-    }
 
     public int getQuantity() {
         return quantity;
@@ -59,5 +54,21 @@ public class Seat {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Tour getTour() {
+        return tour;
+    }
+
+    public void setTour(Tour tour) {
+        this.tour = tour;
     }
 }
