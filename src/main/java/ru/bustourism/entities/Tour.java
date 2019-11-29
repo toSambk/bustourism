@@ -24,6 +24,7 @@ public class Tour implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private int id;
 
     @Column(name = "name", nullable = false, unique = true)
@@ -45,13 +46,12 @@ public class Tour implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
-    @ManyToMany(mappedBy = "tours", fetch = FetchType.EAGER)
-    private List<User> users;
-
-    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "tour", cascade = {CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.DETACH},
+            fetch = FetchType.EAGER)
     private List<Seat> seats;
 
-    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "tour", cascade = {CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.DETACH},
+            fetch = FetchType.EAGER)
     private List<Assessment> assessments;
 
 
@@ -77,12 +77,6 @@ public class Tour implements Serializable {
     public void setSeats(List<Seat> seats) {
         this.seats = seats;
     }
-
-
-
-
-
-
 
     public String getName() {
         return name;
@@ -122,14 +116,6 @@ public class Tour implements Serializable {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
     }
 
     public Date getDate() {

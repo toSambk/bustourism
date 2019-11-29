@@ -19,6 +19,7 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private int id;
 
     @Column(name = "login", length = 32, unique = true, nullable = false)
@@ -27,18 +28,13 @@ public class User implements Serializable {
     @Column(name = "password", length = 32, nullable = false)
     private String password;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "users_tours", joinColumns = {@JoinColumn(referencedColumnName = "ID")},
-                                    inverseJoinColumns = {@JoinColumn(referencedColumnName = "ID")})
-    private List<Tour> tours;
-
     @Column(name = "administrator", nullable = false)
     private boolean administrator;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Assessment> assessments;
 
-    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Seat> seats;
 
 
@@ -72,14 +68,6 @@ public class User implements Serializable {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public List<Tour> getTours() {
-        return tours;
-    }
-
-    public void setTours(List<Tour> tours) {
-        this.tours = tours;
     }
 
     public boolean isAdministrator() {

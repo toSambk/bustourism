@@ -3,16 +3,10 @@ package ru.bustourism.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "seat")
+@Table(name = "seats")
 public class Seat {
 
     public Seat(){}
-
-//    public Seat(int userId, int tourId, int quantity) {
-//        this.userId = userId;
-//        this.tourId = tourId;
-//        this.quantity = quantity;
-//    }
 
     public Seat(User user, Tour tour, int quantity) {
         this.user = user;
@@ -20,15 +14,20 @@ public class Seat {
         this.quantity = quantity;
     }
 
+    public Seat(int quantity) {
+        this.quantity = quantity;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private int id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne (cascade = CascadeType.REFRESH)
     @JoinColumn(name = "tour_id")
     private Tour tour;
 

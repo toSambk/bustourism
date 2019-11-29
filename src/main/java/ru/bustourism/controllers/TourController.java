@@ -45,11 +45,8 @@ public class TourController {
     public String buyTour(HttpSession session, @Validated @ModelAttribute("acceptForm") AcceptingTourBean form, BindingResult result,
                           @RequestParam int tourId, ModelMap model) {
         int userId = (int) session.getAttribute("userId");
-        if(!userDAO.findById(userId).getTours().stream().anyMatch(x-> x.getId() == tourId)) {
-            tourService.addTourToUser(userId, tourId);
-        }
         try {
-            tourService.buySeats(userId, tourId, form.getQuantity());
+//            tourService.buySeats(userId, tourId, form.getQuantity());
         } catch(NotEnoughSeatsException e) {
             result.addError(new FieldError("acceptForm", "quantity", "Недостаточно свободных мест"));
         }

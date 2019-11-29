@@ -1,6 +1,7 @@
 package ru.bustourism.dao;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-//@Ignore
+@Ignore
 public class AssessmentDAOTest {
 
     @PersistenceContext
@@ -46,9 +47,6 @@ public class AssessmentDAOTest {
         user3 = new User("user3", "123", false);
         goodTour = new Tour("goodTour", 100, 50, 5, new Date());
         mediumTour = new Tour("mediumTour", 100, 70, 3, new Date());
-        user1.setTours(Arrays.asList(goodTour, mediumTour));
-        goodTour.setUsers(Arrays.asList(user1));
-        mediumTour.setUsers(Arrays.asList(user1));
         manager.persist(user1);
         manager.persist(goodTour);
         manager.persist(mediumTour);

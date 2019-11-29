@@ -11,6 +11,10 @@
     <properties>
         <spring.version>5.2.1.RELEASE</spring.version>
         <hibernate.version>5.4.8.Final</hibernate.version>
+        <spring.data.version>2.2.2.RELEASE</spring.data.version>
+        <jackson.version>2.10.1</jackson.version>
+        <postgresql.version>9.1-901-1.jdbc4</postgresql.version>
+        <hibernate.validator.version>6.0.14.Final</hibernate.validator.version>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
     </properties>
@@ -77,15 +81,23 @@
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-            <version>6.0.14.Final</version>
+            <version>${hibernate.validator.version}</version>
         </dependency>
         <dependency>
             <groupId>postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>9.1-901-1.jdbc4</version>
+            <version>${postgresql.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-jpa</artifactId>
+            <version>${spring.data.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
     </dependencies>
-
 
 </project>

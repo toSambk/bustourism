@@ -3,7 +3,7 @@ package ru.bustourism.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "assessment")
+@Table(name = "assessments")
 public class Assessment {
 
     public Assessment(){}
@@ -14,11 +14,11 @@ public class Assessment {
         this.value = value;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "tour_id")
     private Tour tour;
 

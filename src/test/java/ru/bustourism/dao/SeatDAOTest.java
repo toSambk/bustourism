@@ -1,6 +1,7 @@
 package ru.bustourism.dao;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import ru.bustourism.config.TestConfig;
 import ru.bustourism.entities.Seat;
 import ru.bustourism.entities.Tour;
 import ru.bustourism.entities.User;
+
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -22,7 +24,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-//@Ignore
+@Ignore
 public class SeatDAOTest {
 
     @PersistenceContext
