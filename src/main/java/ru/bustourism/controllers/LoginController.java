@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.bustourism.dao.UserDAO;
+import ru.bustourism.dao.UsersRepository;
 import ru.bustourism.entities.User;
 import ru.bustourism.forms.RegistrationFormBean;
 
@@ -21,12 +21,12 @@ import javax.servlet.http.HttpSession;
 public class LoginController {
 
     @Autowired
-    private UserDAO userDAO;
+    private UsersRepository usersRepository;
 
     @PostMapping(path = "/login")
     public String login(HttpSession session, @RequestParam String login, @RequestParam String password, ModelMap model) {
         try {
-            User found = userDAO.findByLoginAndPassword(login, password);
+            User found = usersRepository.findByLoginAndPassword(login, password);
             session.setAttribute("userId", found.getId());
             return "redirect:/dashboard";
         } catch(NoResultException notFound) {
@@ -47,7 +47,7 @@ public class LoginController {
             result.addError(new FieldError("form", "passwordConfirmation", "Поля с подтверждением пароля не совпадают"));
         }
         try {
-            userDAO.createUser(new User(form.getLogin(), form.getPassword(), false));
+            usersRepository.save(new User(form.getLogin(), form.getPassword(), false));
         } catch(Exception e) {
             result.addError(new FieldError("form", "login", "Пользователь с таким логином уже существует"));
         }

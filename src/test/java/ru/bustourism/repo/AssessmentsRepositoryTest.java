@@ -13,7 +13,6 @@ import ru.bustourism.dao.AssessmentsRepository;
 import ru.bustourism.entities.Assessment;
 import ru.bustourism.entities.Tour;
 import ru.bustourism.entities.User;
-
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -44,7 +43,7 @@ public class AssessmentsRepositoryTest {
     @Transactional
     public void setup() {
         user = new User("user", "123", false);
-        tour = new Tour("tour", 100, 50, 4, new Date());
+        tour = new Tour("tour", 100, 50, new Date());
         assessment = new Assessment(user, tour, 3);
         manager.persist(user);
         manager.persist(tour);

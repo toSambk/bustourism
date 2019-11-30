@@ -43,7 +43,7 @@ public class SeatsRepositoryTest {
     public void setup() {
         seat = new Seat(3);
         user = new User("user", "123", false);
-        tour = new Tour("tour", 100, 50, 4, new Date());
+        tour = new Tour("tour", 100, 50, new Date());
         user.setSeats(Collections.singletonList(seat));
         tour.setSeats(Collections.singletonList(seat));
         manager.persist(user);

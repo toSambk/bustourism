@@ -1,6 +1,7 @@
 package ru.bustourism.entities;
 
 import javax.persistence.*;
+import java.util.function.Supplier;
 
 @Entity
 @Table(name = "seats")

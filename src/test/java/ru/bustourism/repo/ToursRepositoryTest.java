@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.bustourism.config.TestConfig;
 import ru.bustourism.dao.ToursRepository;
 import ru.bustourism.entities.Tour;
-
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -39,8 +38,8 @@ public class ToursRepositoryTest {
     @Before
     @Transactional
     public void setup() {
-        tour1 = new Tour("goodTour", 100, 50, 5, new Date());
-        tour2 = new Tour("badTour", 100, 40, 2, new Date());
+        tour1 = new Tour("goodTour", 100, 50, new Date());
+        tour2 = new Tour("badTour", 100, 40, new Date());
         manager.persist(tour1);
         manager.persist(tour2);
     }
@@ -48,7 +47,7 @@ public class ToursRepositoryTest {
     @Test
     @Transactional
     public void createUser() {
-        Tour newTour = new Tour("newTour", 100, 50, 5, new Date());
+        Tour newTour = new Tour("newTour", 100, 50, new Date());
         toursRepository.save(newTour);
         try {
             manager.createQuery("from Tour where id = :id", Tour.class)

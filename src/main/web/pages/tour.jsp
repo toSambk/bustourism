@@ -10,9 +10,6 @@
     Имя тура: ${tour.name}
 </p>
 <p>
-    Оценка: ${tour.rating}
-</p>
-<p>
     Количество занятых мест: ${tour.curNumberOfSeats}
 </p>
 <p>

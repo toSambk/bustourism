@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import ru.bustourism.dao.TourDAO;
-import ru.bustourism.dao.UserDAO;
+import ru.bustourism.dao.ToursRepository;
+import ru.bustourism.dao.UsersRepository;
 import ru.bustourism.entities.Tour;
 import ru.bustourism.entities.User;
 
@@ -17,18 +17,18 @@ import java.util.List;
 public class DashboardController {
 
     @Autowired
-    private TourDAO tourDAO;
+    private UsersRepository usersRepository;
 
     @Autowired
-    private UserDAO userDAO;
+    private ToursRepository toursRepository;
 
     @GetMapping(path = "/dashboard")
     public String dashboard(HttpSession session, ModelMap model) {
 
         try {
             int accountId = (int) session.getAttribute("userId");
-            User user = userDAO.findById(accountId);
-            List<Tour> tours = tourDAO.findAllTours();
+            User user = usersRepository.findById(accountId);
+            List<Tour> tours = toursRepository.findAll();
             model.addAttribute("tours", tours);
             model.addAttribute("user", user);
             return "dashboard";

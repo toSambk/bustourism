@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.bustourism.dao.TourDAO;
-import ru.bustourism.dao.UserDAO;
+import ru.bustourism.dao.ToursRepository;
 import ru.bustourism.entities.Tour;
 import ru.bustourism.exceptions.NotEnoughSeatsException;
 import ru.bustourism.forms.AcceptingTourBean;
@@ -23,10 +22,7 @@ import javax.servlet.http.HttpSession;
 public class TourController {
 
     @Autowired
-    private UserDAO userDAO;
-
-    @Autowired
-    private TourDAO tourDAO;
+    private ToursRepository toursRepository;
 
     @Autowired
     private TourService tourService;
@@ -35,7 +31,7 @@ public class TourController {
     public String tour(HttpSession session, @RequestParam int tourId, ModelMap model) {
 
             int sessionId = (int) session.getAttribute("userId");
-            Tour found = tourDAO.findById(tourId);
+            Tour found = toursRepository.findById(tourId);
             model.addAttribute("tour", found);
             return "tour";
 
@@ -46,11 +42,11 @@ public class TourController {
                           @RequestParam int tourId, ModelMap model) {
         int userId = (int) session.getAttribute("userId");
         try {
-//            tourService.buySeats(userId, tourId, form.getQuantity());
+            tourService.buySeatsForTourByUser(userId, tourId, form.getQuantity());
         } catch(NotEnoughSeatsException e) {
             result.addError(new FieldError("acceptForm", "quantity", "Недостаточно свободных мест"));
         }
-        model.addAttribute("tour", tourDAO.findById(tourId));
+        model.addAttribute("tour", toursRepository.findById(tourId));
         return "tour";
     }
 

@@ -18,10 +18,11 @@ import ru.bustourism.service.TourService;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
@@ -53,8 +54,8 @@ public class EntityCascadeTest {
         user1 = new User("user1", "123", false);
         user2 = new User("user2", "123", false);
         user3 = new User("user3", "123", false);
-        goodTour = new Tour("goodTour", 100, 50, 5, new Date());
-        mediumTour = new Tour("mediumTour", 100, 70, 3, new Date());
+        goodTour = new Tour("goodTour", 100, 50, new Date());
+        mediumTour = new Tour("mediumTour", 100, 70, new Date());
         manager.persist(user1);
         manager.persist(user2);
         manager.persist(goodTour);
@@ -86,6 +87,8 @@ public class EntityCascadeTest {
         }
 
     }
+
+
 
 
 

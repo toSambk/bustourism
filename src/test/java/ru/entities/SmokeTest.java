@@ -37,8 +37,8 @@ public class SmokeTest {
         User user1 = new User("user1", "123", false);
         User user2 = new User("user2", "123", false);
         User user3 = new User("user3", "123", false);
-        Tour goodTour = new Tour("goodTour", 100, 50, 5, new Date());
-        Tour mediumTour = new Tour("mediumTour", 100, 70, 3, new Date());
+        Tour goodTour = new Tour("goodTour", 100, 50, new Date());
+        Tour mediumTour = new Tour("mediumTour", 100, 70, new Date());
         Assessment assessment = new Assessment(user1, goodTour, 5);
 //        List<Assessment> list = Arrays.asList(assessment);
 //        user1.setAssessments(list);

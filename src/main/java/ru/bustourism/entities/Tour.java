@@ -14,11 +14,10 @@ public class Tour implements Serializable {
 
     public Tour(){}
 
-    public Tour(String name, int maxNumberOfSeats, int curNumberOfSeats, int rating, Date date) {
+    public Tour(String name, int maxNumberOfSeats, int curNumberOfSeats, Date date) {
         this.name = name;
         this.maxNumberOfSeats = maxNumberOfSeats;
         this.curNumberOfSeats = curNumberOfSeats;
-        this.rating = rating;
         this.date = date;
     }
 
@@ -38,19 +37,15 @@ public class Tour implements Serializable {
     @Positive
     private int curNumberOfSeats;
 
-    @Column(name = "rating", nullable = false, length = 5)
-    @Positive
-    private double rating;
-
     @Column(name = "date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
-    @OneToMany(mappedBy = "tour", cascade = {CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.DETACH},
+    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL/*{CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.DETACH}*/,
             fetch = FetchType.EAGER)
     private List<Seat> seats;
 
-    @OneToMany(mappedBy = "tour", cascade = {CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.DETACH},
+    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL/*{CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.DETACH}*/,
             fetch = FetchType.EAGER)
     private List<Assessment> assessments;
 
@@ -102,13 +97,6 @@ public class Tour implements Serializable {
         this.curNumberOfSeats = curNumberOfSeats;
     }
 
-    public double getRating() {
-        return rating;
-    }
-
-    public void setRating(double rating) {
-        this.rating = rating;
-    }
 
     public int getId() {
         return id;
