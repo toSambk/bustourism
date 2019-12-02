@@ -29,7 +29,6 @@ public class TourController {
 
     @GetMapping(path = "/tour")
     public String tour(HttpSession session, @RequestParam int tourId, ModelMap model) {
-
             int sessionId = (int) session.getAttribute("userId");
             Tour found = toursRepository.findById(tourId);
             model.addAttribute("tour", found);

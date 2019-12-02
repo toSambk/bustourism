@@ -1,0 +1,28 @@
+#rating {
+    width: 320px;
+    border-radius: 4px;
+    box-shadow: 0 0 2px 1px #333333;
+    margin: 10px auto;
+    padding: 10px;
+    text-align: center;
+}
+#rating div { float: left; }
+#rating p { margin: 0; padding: 0; }
+.param {
+    width: 110px;
+    margin: 0 20px 0 0;
+    text-align: right;
+}
+.param, .rating, #summ { line-height: 28px; }
+.stars, #sum_stars { background: url(../images/stars.png); }
+.stars, #sum_stars, .progress, #sum_progress {
+    width: 130px;
+    height: 28px;
+    cursor: pointer;
+}
+.progress { background: #FFEE00; }
+#sum_progress { background: #00EE00; }
+.rating, #summ {
+    margin: 0 0 0 20px;
+    font-weight: bold;
+}

@@ -1,14 +1,16 @@
 package ru.bustourism.dao;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.bustourism.entities.Seat;
 import ru.bustourism.entities.Tour;
 import ru.bustourism.entities.User;
 
 @Repository
-public interface SeatsRepository extends CrudRepository<Seat, Integer> {
+public interface SeatsRepository extends PagingAndSortingRepository<Seat, Integer> {
 
     Seat findById(int id);
 
@@ -17,5 +19,8 @@ public interface SeatsRepository extends CrudRepository<Seat, Integer> {
     Seat save(Seat seat);
 
     void deleteById(int id);
+
+    @Query("select a from Seat a")
+    Page<Seat> findAllInPages(Pageable pageable);
 
 }

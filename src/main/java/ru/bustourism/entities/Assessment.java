@@ -1,5 +1,7 @@
 package ru.bustourism.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -14,10 +16,12 @@ public class Assessment {
         this.value = value;
     }
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "tour_id")
     private Tour tour;

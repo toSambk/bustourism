@@ -1,13 +1,17 @@
 package ru.bustourism.dao;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 import ru.bustourism.entities.Tour;
 
 import java.util.List;
 
 @Repository
-public interface ToursRepository extends CrudRepository<Tour, Integer> {
+public interface ToursRepository extends PagingAndSortingRepository<Tour, Integer> {
 
     Tour findById(int id);
 
@@ -20,5 +24,8 @@ public interface ToursRepository extends CrudRepository<Tour, Integer> {
     void deleteById(int id);
 
     void deleteAll();
+
+    @Query("select a from Tour a")
+    Page<Tour> findAllInPages(Pageable pageable);
 
 }

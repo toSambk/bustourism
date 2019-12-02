@@ -9,6 +9,8 @@ import ru.bustourism.dao.*;
 import ru.bustourism.entities.Assessment;
 import ru.bustourism.entities.Tour;
 import ru.bustourism.entities.User;
+import ru.bustourism.service.TourService;
+
 import java.util.Arrays;
 import java.util.Date;
 
@@ -21,6 +23,9 @@ public class StartupListener {
     @Autowired
     private ToursRepository toursRepository;
 
+    @Autowired
+    private TourService tourService;
+
     @EventListener
     @Transactional
     public void handleContextRefreshEvent(ContextRefreshedEvent ctxStartEvent) {
@@ -30,9 +35,15 @@ public class StartupListener {
         Tour goodTour = new Tour("goodTour", 100, 50, new Date());
         Tour mediumTour = new Tour("mediumTour", 100, 70, new Date());
         Tour badTour = new Tour("badTour", 50, 5, new Date());
+        goodTour.setRating(0);
+        mediumTour.setRating(0);
+        badTour.setRating(0);
         usersRepository.save(admin);
         usersRepository.save(user1);
         usersRepository.save(user2);
+        toursRepository.save(badTour);
+        toursRepository.save(mediumTour);
+        toursRepository.save(goodTour);
         toursRepository.save(badTour);
         toursRepository.save(mediumTour);
         toursRepository.save(goodTour);

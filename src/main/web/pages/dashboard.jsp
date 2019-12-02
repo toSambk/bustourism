@@ -8,10 +8,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <title>Список туров</title>
     <link rel="stylesheet" type="text/css" href="resources/styles/stylesDashboard.css" />
-    <link rel="stylesheet" href="styles/stylesDashboard.css" type="text/css">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,300" type="text/css">
+    <script type="text/javascript" src="resources/script/script.js"></script>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 </head>
-<body>
+
+<body onload="loadTours()">
 
 <div id="wrapper">
     <header>
@@ -21,47 +23,22 @@
     </header>
     <nav>
         <ul class="top-menu">
-            <li><a href="/sessionclear">Страница авторизации</a></li>
+            <li><a href="/sessionclear">Выйти</a></li>
             <li class="active"><a href="/dashboard">Список автобусных туров</a></li>
             <li><a href="/cabinet">Личный кабинет</a></li>
         </ul>
     </nav>
     <div id="heading">
-        <h1>Список автобусных туров</h1>
+        <h1>Лучшие туры на автобусе</h1>
     </div>
     <aside>
         <nav>
-            <ul class="aside-menu">
-                <c:forEach items="${tours}" var="tour">
-                    <li><a href="/tour?tourId=${tour.id}">${tour.name}</a></li>
-                </c:forEach>
+            <ul id="tours-list" class="aside-menu">
+                <li>Загрузка...</li>
             </ul>
         </nav>
     </aside>
-    <section>
-<%--        <table>--%>
-<%--            <thead>--%>
-<%--            <tr>--%>
-<%--                <th>Название тура</th>--%>
-<%--                <th>Максимальное количество мест</th>--%>
-<%--                <th>Текущее количество мест</th>--%>
-<%--                <th>Дата начала</th>--%>
-<%--                <th>Рейтинг</th>--%>
-<%--            </tr>--%>
-<%--            </thead>--%>
-<%--            <tbody>--%>
-<%--            <c:forEach items="${tours}" var="tour">--%>
-<%--                <tr>--%>
-<%--                    <td>${tour.name}</td>--%>
-<%--                    <td>${tour.maxNumberOfSeats}</td>--%>
-<%--                    <td>${tour.curNumberOfSeats}</td>--%>
-<%--                    <td>${tour.date}</td>--%>
-<%--                    <td>${tour.rating}</td>--%>
-<%--                </tr>--%>
-<%--            </c:forEach>--%>
-<%--            </tbody>--%>
-<%--        </table>--%>
-
+    <section id="tour-info">
         <p>Добро пожаловать, ${user.login}!</p>
         <p>Выберите интересующий вас тур слева</p>
         <figure>
@@ -70,7 +47,6 @@
         <figure>
             <img src="${pageContext.request.contextPath}/resources/images/sample2.jpg" width="320" height="175" alt="">
         </figure>
-
     </section>
 </div>
 

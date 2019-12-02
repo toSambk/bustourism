@@ -13,7 +13,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/resources/**")
                 .addResourceLocations("/resources/styles")
                 .addResourceLocations("/resources/images")
-                .addResourceLocations("/resources/font");
+                .addResourceLocations("/resources/font")
+                .addResourceLocations("/resources/script");
     }
 
     @Override

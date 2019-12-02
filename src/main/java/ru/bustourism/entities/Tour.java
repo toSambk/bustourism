@@ -1,9 +1,11 @@
 package ru.bustourism.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.ManyToAny;
 
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -34,17 +36,22 @@ public class Tour implements Serializable {
     private int maxNumberOfSeats;
 
     @Column(name = "cur_number_of_seats")
-    @Positive
+    @PositiveOrZero
     private int curNumberOfSeats;
 
     @Column(name = "date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
+    @Column(name = "rating")
+    private double rating;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL/*{CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.DETACH}*/,
             fetch = FetchType.EAGER)
     private List<Seat> seats;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL/*{CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.DETACH}*/,
             fetch = FetchType.EAGER)
     private List<Assessment> assessments;
@@ -114,4 +121,11 @@ public class Tour implements Serializable {
         this.date = date;
     }
 
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
 }

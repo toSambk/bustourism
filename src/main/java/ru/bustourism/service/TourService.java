@@ -97,9 +97,11 @@ public class TourService {
         }
         user.setSeats(seatsOfUser);
         tour.setSeats(seatsOfTour);
+        tour.setCurNumberOfSeats(tour.getCurNumberOfSeats() - amount);
         seatsRepository.save(seat);
         usersRepository.save(user);
         toursRepository.save(tour);
+        calculateRating(tourId);
     }
 
 
@@ -123,6 +125,12 @@ public class TourService {
         toursRepository.save(tour);
         seatsRepository.deleteById(seat.getId());
 
+    }
+
+    public void calculateRating(int tourId) {
+        Tour tour = toursRepository.findById(tourId);
+        tour.setRating(getTourRating(tourId));
+        toursRepository.save(tour);
     }
 
 }

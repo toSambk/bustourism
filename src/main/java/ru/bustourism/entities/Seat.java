@@ -1,5 +1,7 @@
 package ru.bustourism.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.function.Supplier;
 
@@ -24,10 +26,12 @@ public class Seat {
     @Column(name = "id")
     private int id;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "user_id")
     private User user;
 
+    @JsonIgnore
     @ManyToOne (cascade = CascadeType.REFRESH)
     @JoinColumn(name = "tour_id")
     private Tour tour;
