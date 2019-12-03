@@ -8,8 +8,9 @@
     <title>Список туров</title>
     <link rel="stylesheet" type="text/css" href="resources/styles/stylesDashboard.css" />
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,300" type="text/css">
+    <script type="text/javascript" src="resources/script/script.js"></script>
 </head>
-<body>
+<body onload="loadSeats(${sessionScope['userId']});loadAssessments(${sessionScope['userId']});">
 
 <div id="wrapper">
     <header>
@@ -19,19 +20,29 @@
     </header>
     <nav>
         <ul class="top-menu">
-            <li><a href="/">Страница авторизации</a></li>
+            <li><a href="/sessionclear">Выйти</a></li>
             <li><a href="/dashboard">Список автобусных туров</a></li>
             <li class="active"><a href="/cabinet">Личный кабинет</a></li>
         </ul>
     </nav>
     <div id="heading">
-        <h1>Личный кабинет</h1>
+        <h1>Личный кабинет пользователя ${user.login}</h1>
     </div>
     <aside>
         <p>Пользователь ${user.login}</p>
     </aside>
     <section>
 
+        <h3>Забронированные места</h3>
+        <div id="seats-list">
+            <p>Загрузка...</p>
+        </div>
+
+
+        <h3>Поставленные оценки</h3>
+        <div id="assessments-list">
+            <p>Загрузка...</p>
+        </div>
 
     </section>
 </div>

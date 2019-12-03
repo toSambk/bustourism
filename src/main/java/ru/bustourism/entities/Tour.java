@@ -44,6 +44,7 @@ public class Tour implements Serializable {
     private Date date;
 
     @Column(name = "rating")
+    @PositiveOrZero
     private double rating;
 
     @JsonIgnore

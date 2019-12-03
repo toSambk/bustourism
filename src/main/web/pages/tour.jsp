@@ -4,8 +4,8 @@
 <html>
 <head>
     <title>${tour.name}</title>
-    <link rel="stylesheet" type="text/css" href="resources/styles/stylesDashboard.css" />
     <link rel="stylesheet" type="text/css" href="resources/styles/ratingStars.css"/>
+    <link rel="stylesheet" type="text/css" href="resources/styles/stylesDashboard.css" />
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,300" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script type="text/javascript" src="resources/script/script.js"></script>
@@ -34,6 +34,7 @@
             <ul class="aside-menu">
                 <p>Количество занятых мест: ${tour.curNumberOfSeats}</p>
                 <p>Максимальное количество мест: ${tour.maxNumberOfSeats}</p>
+                <p>Рейтинг тура: ${tour.rating}</p>
             </ul>
         </nav>
     </aside>
@@ -47,22 +48,26 @@
         <input type="submit" value="Приобрести тур"/>
         </form:form>
 
-        <div id="rating">
-            <div class="param">Параметр 1:</div>
-            <div><div class="stars"></div><p class="progress" id="p1"></p></div>
-            <div class="rating" id="param1">5.0</div>
-            <div class="param">Параметр 2:</div>
-            <div><div class="stars"></div><p class="progress" id="p2"></p></div>
-            <div class="rating" id="param2">5.0</div>
-            <div class="param">Параметр 3:</div>
-            <div><div class="stars"></div><p class="progress" id="p3"></p></div>
-            <div class="rating" id="param3">5.0</div>
-            <div class="param">Общая оценка:</div>
-            <div><div id="sum_stars"></div><p id="sum_progress"></p></div>
-            <div id="summ">5.00</div>
-            <input id="el_999" type="submit" value="Отправить!">
-            <p id="message"></p>
+        <form method="post" action="/assessTour">
+        <div class="rating_block">
+            <input name="rating" value="5" id="rating_5" type="radio"/>
+            <label for="rating_5" class="label_rating"></label>
+
+            <input name="rating" value="4" id="rating_4" type="radio" />
+            <label for="rating_4" class="label_rating"></label>
+
+            <input name="rating" value="3" id="rating_3" type="radio" />
+            <label for="rating_3" class="label_rating"></label>
+
+            <input name="rating" value="2" id="rating_2" type="radio" />
+            <label for="rating_2" class="label_rating"></label>
+
+            <input name="rating" value="1" id="rating_1" type="radio" />
+            <label for="rating_1" class="label_rating"></label>
         </div>
+            <input type="hidden" name="tourId" value="${tour.id}"/>
+            <p><input type="submit" value="Отправить"></p>
+        </form>
 
     </section>
 </div>

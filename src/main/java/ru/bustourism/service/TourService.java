@@ -62,6 +62,7 @@ public class TourService {
         assessmentsRepository.save(newAssessment);
         usersRepository.save(user);
         toursRepository.save(tour);
+        calculateRating(tourId);
     }
 
 
@@ -101,7 +102,7 @@ public class TourService {
         seatsRepository.save(seat);
         usersRepository.save(user);
         toursRepository.save(tour);
-        calculateRating(tourId);
+
     }
 
 

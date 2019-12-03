@@ -1,6 +1,8 @@
 package ru.bustourism.forms;
 
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 public class AcceptingTourBean {
 
@@ -12,7 +14,8 @@ public class AcceptingTourBean {
         this.quantity = quantity;
     }
 
-    @Min(value = 1, message = "Поле должно содержать число больше или равно 1")
+    @Positive(message = "Поле должно содержать число больше или равно 1")
+    @NotNull
     public Integer quantity;
 
 }

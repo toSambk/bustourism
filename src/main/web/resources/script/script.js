@@ -63,55 +63,99 @@ function tourLoaded(tour) {
     var p2 = document.createElement("P");
     var p3 = document.createElement("P");
     var a = document.createElement("a");
+    var p4 = document.createElement("P");
     h3.appendChild(document.createTextNode("Имя тура " + tour.name));
     p1.appendChild(document.createTextNode("Количество занятых мест - " + tour.curNumberOfSeats));
     p2.appendChild(document.createTextNode("Максимальное количество мест - " + tour.maxNumberOfSeats));
     p3.appendChild(document.createTextNode("Дата - " + new Date(tour.date).toISOString()));
+    p4.appendChild(document.createTextNode("Рейтинг тура - " + tour.rating))
     a.href = "/tour?tourId=" + tour.id;
-    a.textContent = "Забронировать место";
+    a.textContent = "Забронировать место и оценить";
     section.appendChild(h3);
     section.appendChild(p1);
     section.appendChild(p2);
     section.appendChild(p3);
+    section.appendChild(p4);
     section.appendChild(a);
+}
+
+
+
+function loadSeats(id) {
+    var request = new XMLHttpRequest();
+    request.open("get", "api/seats/find?userId=" + id + "&seatPage=1", true);
+    request.onreadystatechange = function (ev) {
+        if (request.readyState === 4) {
+            if (request.status === 200) {
+                var response = JSON.parse(request.responseText);
+                seatsLoaded(response.content);
+            } else {
+                loadSeatsFailed();
+            }
+        }
+    };
+    request.send();
+}
+
+function loadAssessments(id) {
+    var request = new XMLHttpRequest();
+    request.open("get", "api/assessments/find?userId=" + id + "&assessmentPage=1", true);
+    request.onreadystatechange = function (ev) {
+        if (request.readyState === 4) {
+            if (request.status === 200) {
+                var response = JSON.parse(request.responseText);
+                assessmentsLoaded(response.content);
+            } else {
+                loadAssessmentsFailed();
+            }
+        }
+    };
+    request.send();
+}
+
+function loadSeatsFailed() {
+    var div = document.getElementById("seats-list");
+    clearNode(div);
+    var errorMessageCell = document.createElement("P");
+    errorMessageCell.appendChild(document.createTextNode("Ошибка загрузки забронированных мест"));
+    div.appendChild(errorMessageCell);
+}
+
+function loadAssessmentsFailed() {
+    var div = document.getElementById("assessments-list");
+    clearNode(div);
+    var errorMessageCell = document.createElement("P");
+    errorMessageCell.appendChild(document.createTextNode("Ошибка загрузки поставленных оценок"));
+    div.appendChild(errorMessageCell);
+}
+
+function assessmentsLoaded(assessments) {
+    var div = document.getElementById("assessments-list");
+    clearNode(div);
+    for (var index = 0; index < assessments.length; index++) {
+        var assessment = assessments[index];
+        var p1 = document.createElement("P");
+        p1.appendChild(document.createTextNode("Тур: " + assessment.tour.name + " Оценка: " + assessment.value));
+        div.appendChild(p1);
+    }
+
+}
+
+function seatsLoaded(seats) {
+    var div = document.getElementById("seats-list");
+    clearNode(div);
+    for (var index = 0; index < seats.length; index++) {
+        var seat = seats[index];
+        var p1 = document.createElement("P");
+        p1.appendChild(document.createTextNode("Тур: " + seat.tour.name + " Забронировано: " + seat.quantity));
+        div.appendChild(p1);
+    }
 }
 
 
 
 
 
-$(document).ready(function(){
-    function move(e, obj){
-        var summ = 0;
-        var id = obj.next().attr('id').substr(1);
-        var progress = e.pageX - obj.offset().left;
-        var rating = progress * 5 / $('.stars').width();
-        $('#param'+id).text(rating.toFixed(1));
-        obj.next().width(progress);
-        $('.rating').each(function(){ summ += parseFloat($(this).text()); });
-        summ = summ / $('.rating').length;
-        $('#sum_progress').width(Math.round($('.stars').width() * summ / 5));
-        $('#summ').text(summ.toFixed(2));
-    }
 
-    $('#rating .stars').click(function(e){
-        $(this).toggleClass('fixed');
-        move(e, $(this));
-    });
 
-    $('#rating .stars').on('mousemove', function(e){
-        if ($(this).hasClass('fixed')==false) move(e, $(this));
-    });
 
-    $('#rating [type=submit]').click(function(){
-        summ = parseFloat($('#summ').text());
-        jQuery.post('change_rating.php', {
-            obj_id: $(this).attr('id').substr(3),
-            rating: summ
-        }, notice);
-    });
-
-    function notice(text){
-        $('#message').fadeOut(500, function(){ $(this).text(text); }).fadeIn(2000);
-    }
-});

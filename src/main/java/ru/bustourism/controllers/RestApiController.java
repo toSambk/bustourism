@@ -55,5 +55,26 @@ public class RestApiController {
         return toursRepository.findAllInPages(PageRequest.of(tourPage - 1, 25, Sort.by(Sort.Order.asc("id"))));
     }
 
+//    @GetMapping("api/assessments/find")
+//    public Page<Assessment> findAssessments(@RequestParam("assessmentPage") int assessmentPage) {
+//        return assessmentsRepository.findAllInPages(PageRequest.of(assessmentPage - 1, 25, Sort.by(Sort.Order.asc("id"))));
+//    }
+//
+//    @GetMapping("api/seats/find")
+//    public Page<Seat> findSeats(@RequestParam("seatPage") int seatPage) {
+//        return seatsRepository.findAllInPages(PageRequest.of(seatPage - 1, 25, Sort.by(Sort.Order.asc("id"))));
+//    }
+
+    @GetMapping("api/seats/find")
+    public Page<Seat> findSeatsByUserId(@RequestParam("userId") int userId, @RequestParam("seatPage") int seatPage) {
+        return seatsRepository.findSeatsByUserId(userId, PageRequest.of(seatPage - 1, 25, Sort.by(Sort.Order.asc("id"))));
+    }
+
+    @GetMapping("api/assessments/find")
+    public Page<Assessment> findAssessmentsByUserId(@RequestParam("userId") int userId, @RequestParam("assessmentPage") int assessmentPage) {
+        return assessmentsRepository.findAssessmentsByUserId(userId, PageRequest.of(assessmentPage - 1, 25, Sort.by(Sort.Order.asc("id"))));
+    }
+
+
 
 }

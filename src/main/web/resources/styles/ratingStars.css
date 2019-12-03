@@ -1,28 +1,22 @@
-#rating {
-    width: 320px;
-    border-radius: 4px;
-    box-shadow: 0 0 2px 1px #333333;
-    margin: 10px auto;
-    padding: 10px;
-    text-align: center;
+.rating_block {
+    width: 125px;
+    height: 25px;
 }
-#rating div { float: left; }
-#rating p { margin: 0; padding: 0; }
-.param {
-    width: 110px;
-    margin: 0 20px 0 0;
-    text-align: right;
+.rating_block input[type="radio"] {
+    display: none;
 }
-.param, .rating, #summ { line-height: 28px; }
-.stars, #sum_stars { background: url(../images/stars.png); }
-.stars, #sum_stars, .progress, #sum_progress {
-    width: 130px;
-    height: 28px;
+.label_rating {
+    float: right;
+    display: block;
+    width: 25px;
+    height: 25px;
+    background: url(../images/rating.png) no-repeat 50% 0;
     cursor: pointer;
 }
-.progress { background: #FFEE00; }
-#sum_progress { background: #00EE00; }
-.rating, #summ {
-    margin: 0 0 0 20px;
-    font-weight: bold;
+/*Пишем правила смены положения background-а*/
+.rating_block .label_rating:hover, /*Правило для ховера на текущий лейбл*/
+.rating_block .label_rating:hover ~ .label_rating, /*Правило для всех следующих лейблов по DOM дереву*/
+.rating_block input[type="radio"]:checked ~ .label_rating /*Правило для всех следующих лейблов после выбранного инпута, чтобы звездочки как бы зафиксировались*/
+{
+    background-position: 50% -25px;
 }

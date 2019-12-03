@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.bustourism.entities.Assessment;
 import ru.bustourism.entities.Tour;
@@ -22,4 +23,7 @@ public interface AssessmentsRepository extends PagingAndSortingRepository<Assess
 
     @Query("select a from Assessment a")
     Page<Assessment> findAllInPages(Pageable pageable);
+
+    @Query("select a from Assessment a where a.user.id = :userId")
+    Page<Assessment> findAssessmentsByUserId(@Param("userId") int userId, Pageable pageable);
 }
