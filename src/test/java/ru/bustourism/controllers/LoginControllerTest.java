@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = TestConfig.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @WebAppConfiguration
-@Ignore
+@Ignore// this is no longer needed since we use Spring Security's Login Controller
 public class LoginControllerTest {
 
     @Autowired
