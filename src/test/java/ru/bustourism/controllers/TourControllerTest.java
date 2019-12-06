@@ -35,7 +35,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = {TestConfig.class, SecurityConfig.class, WebConfig.class})
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @WebAppConfiguration
-@Ignore
 public class TourControllerTest {
 
     @Autowired
@@ -93,6 +92,7 @@ public class TourControllerTest {
     }
 
     @Test
+    @Ignore
     public void unauthorizedUserCouldNotBuyATour() throws Exception {
         AcceptingTourBean acceptingTourBean = new AcceptingTourBean();
         acceptingTourBean.setQuantity(2);
@@ -106,6 +106,7 @@ public class TourControllerTest {
 
     @Test
     @WithMockUser(username = "admin", roles = {"USER", "ADMIN"})
+    @Ignore
     public void authorizedUserCouldNotBuyATour() throws Exception {
         AcceptingTourBean acceptingTourBean = new AcceptingTourBean();
         acceptingTourBean.setQuantity(2);
