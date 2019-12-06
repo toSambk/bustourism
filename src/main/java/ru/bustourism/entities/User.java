@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -15,7 +14,7 @@ public class User implements Serializable {
 
     public User(String login, String password, boolean administrator){
         this.login = login;
-        this.password = password;
+        this.encryptedPassword = password;
         this.administrator = administrator;
     }
 
@@ -28,8 +27,8 @@ public class User implements Serializable {
     private String login;
 
     @JsonIgnore
-    @Column(name = "password", length = 32, nullable = false)
-    private String password;
+    @Column(name = "password", length = 64, nullable = false)
+    private String encryptedPassword;
 
     @Column(name = "administrator", nullable = false)
     private boolean administrator;
@@ -59,12 +58,12 @@ public class User implements Serializable {
         this.login = login;
     }
 
-    public String getPassword() {
-        return password;
+    public String getEncryptedPassword() {
+        return encryptedPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setEncryptedPassword(String encryptedPassword) {
+        this.encryptedPassword = encryptedPassword;
     }
 
     public int getId() {
@@ -98,4 +97,5 @@ public class User implements Serializable {
     public void setSeats(List<Seat> seats) {
         this.seats = seats;
     }
+
 }

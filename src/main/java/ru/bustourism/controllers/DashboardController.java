@@ -11,6 +11,7 @@ import ru.bustourism.entities.User;
 
 import javax.persistence.NoResultException;
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -23,16 +24,14 @@ public class DashboardController {
     private ToursRepository toursRepository;
 
     @GetMapping(path = "/dashboard")
-    public String dashboard(HttpSession session, ModelMap model) {
-
+    public String dashboard(Principal principal, ModelMap model) {
         try {
-            int accountId = (int) session.getAttribute("userId");
-            User user = usersRepository.findById(accountId);
+            User user = usersRepository.findByLogin(principal.getName());
             List<Tour> tours = toursRepository.findAll();
             model.addAttribute("tours", tours);
             model.addAttribute("user", user);
             return "dashboard";
-        } catch(NoResultException notFound) {
+        } catch(Exception notFound) {
             return "mainPage";
         }
     }

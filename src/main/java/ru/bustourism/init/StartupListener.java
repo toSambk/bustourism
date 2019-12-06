@@ -3,6 +3,7 @@ package ru.bustourism.init;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.bustourism.dao.*;
@@ -26,12 +27,15 @@ public class StartupListener {
     @Autowired
     private TourService tourService;
 
+    @Autowired
+    private PasswordEncoder encoder;
+
     @EventListener
     @Transactional
     public void handleContextRefreshEvent(ContextRefreshedEvent ctxStartEvent) {
-        User admin = new User("admin", "admin", true);
-        User user1 = new User("user1", "123", false);
-        User user2 = new User("user2", "456", false);
+        User admin = new User("admin", encoder.encode("admin"), true);
+        User user1 = new User("user1", encoder.encode("123"), false);
+        User user2 = new User("user2", encoder.encode("456"), false);
         Tour goodTour = new Tour("goodTour", 100, 50, new Date());
         Tour mediumTour = new Tour("mediumTour", 100, 70, new Date());
         Tour badTour = new Tour("badTour", 50, 5, new Date());

@@ -15,7 +15,7 @@ public interface UsersRepository extends PagingAndSortingRepository<User, Intege
 
     User findById(int id);
 
-    User findByLoginAndPassword(String login, String password);
+    User findByLoginAndEncryptedPassword(String login, String encryptedPassword);
 
     User findByLogin(String login);
 

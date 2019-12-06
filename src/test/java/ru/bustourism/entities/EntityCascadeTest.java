@@ -1,6 +1,5 @@
 package ru.bustourism.entities;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,11 +17,10 @@ import ru.bustourism.service.TourService;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
@@ -87,10 +85,6 @@ public class EntityCascadeTest {
         }
 
     }
-
-
-
-
 
 
 }

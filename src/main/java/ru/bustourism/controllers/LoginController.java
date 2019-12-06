@@ -1,6 +1,7 @@
 package ru.bustourism.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -23,13 +24,16 @@ public class LoginController {
     @Autowired
     private UsersRepository usersRepository;
 
-    @PostMapping(path = "/login")
+    @Autowired
+    private PasswordEncoder encoder;
+
+   // @PostMapping(path = "/login")
     public String login(HttpSession session, @RequestParam String login, @RequestParam String password, ModelMap model) {
         try {
-            User found = usersRepository.findByLoginAndPassword(login, password);
+            User found = usersRepository.findByLoginAndEncryptedPassword(login, password);
             session.setAttribute("userId", found.getId());
             return "redirect:/dashboard";
-        } catch(NoResultException notFound) {
+        } catch(NoResultException | NullPointerException notFound) {
             model.addAttribute("login", login);
             return "mainPage";
         }
@@ -47,7 +51,7 @@ public class LoginController {
             result.addError(new FieldError("form", "passwordConfirmation", "Поля с подтверждением пароля не совпадают"));
         }
         try {
-            usersRepository.save(new User(form.getLogin(), form.getPassword(), false));
+            usersRepository.save(new User(form.getLogin(), encoder.encode(form.getPassword()), false));
         } catch(Exception e) {
             result.addError(new FieldError("form", "login", "Пользователь с таким логином уже существует"));
         }

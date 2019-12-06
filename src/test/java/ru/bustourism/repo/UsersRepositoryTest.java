@@ -78,7 +78,7 @@ public class UsersRepositoryTest {
         try {
             User found = manager.createQuery("from User where login = :login AND password = :password", User.class)
                     .setParameter("login", admin.getLogin())
-                    .setParameter("password", admin.getPassword())
+                    .setParameter("password", admin.getEncryptedPassword())
                     .getSingleResult();
             assertEquals(found.getId(), admin.getId());
         } catch (NoResultException e) {

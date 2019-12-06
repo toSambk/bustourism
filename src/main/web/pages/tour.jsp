@@ -48,7 +48,7 @@
         <input type="submit" value="Приобрести тур"/>
         </form:form>
 
-        <form method="post" action="/assessTour">
+        <form:form method="post" action="/assessTour">
         <div class="rating_block">
             <input name="rating" value="5" id="rating_5" type="radio"/>
             <label for="rating_5" class="label_rating"></label>
@@ -67,7 +67,7 @@
         </div>
             <input type="hidden" name="tourId" value="${tour.id}"/>
             <p><input type="submit" value="Отправить"></p>
-        </form>
+        </form:form>
 
     </section>
 </div>

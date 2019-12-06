@@ -8,6 +8,7 @@ import ru.bustourism.dao.UsersRepository;
 import ru.bustourism.entities.User;
 
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 
 @Controller
 public class CabinetController {
@@ -16,11 +17,9 @@ public class CabinetController {
     private UsersRepository usersRepository;
 
     @GetMapping(path = "/cabinet")
-    public String cabinet(HttpSession session, ModelMap model) {
-        int sessionId = (int) session.getAttribute("userId");
-
-            User byId = usersRepository.findById(sessionId);
-            model.addAttribute("user", byId);
+    public String cabinet(Principal principal, ModelMap model) {
+            User found = usersRepository.findByLogin(principal.getName());
+            model.addAttribute("user", found);
             return "cabinet";
 
     }

@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Oswald:400,300" type="text/css">
     <script type="text/javascript" src="resources/script/script.js"></script>
 </head>
-<body onload="loadSeats(${sessionScope['userId']});loadAssessments(${sessionScope['userId']});">
+<body onload="loadSeats(${user.id});loadAssessments(${user.id});">
 
 <div id="wrapper">
     <header>

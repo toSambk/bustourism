@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean id="login" scope="request" class="java.lang.String"/>
 
@@ -22,12 +23,14 @@
                 <input type="password" name="password" placeholder="Введите пароль">
                     <i class="icon-lock icon-large"></i>
                 </p>
+                <security:csrfInput/>
                 <p class="submit">
                     <button type="submit" name="submit" value="Войти"><i class="icon-arrow-right icon-large"></i></button>
                 </p>
                 <p>
                     <a href="/register">Регистрация нового пользователя</a>
                 </p>
+
         </form>
 </c:if>
 

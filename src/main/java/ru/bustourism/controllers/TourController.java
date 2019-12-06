@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.bustourism.dao.ToursRepository;
+import ru.bustourism.dao.UsersRepository;
 import ru.bustourism.entities.Tour;
+import ru.bustourism.entities.User;
 import ru.bustourism.exceptions.NotEnoughSeatsException;
 import ru.bustourism.exceptions.TourNotFoundException;
 import ru.bustourism.exceptions.UserNotFoundException;
@@ -22,6 +24,7 @@ import ru.bustourism.service.TourService;
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,9 +37,11 @@ public class TourController {
     @Autowired
     private TourService tourService;
 
+    @Autowired
+    private UsersRepository usersRepository;
+
     @GetMapping(path = "/tour")
-    public String tour(HttpSession session, @RequestParam int tourId, ModelMap model) {
-            int sessionId = (int) session.getAttribute("userId");
+    public String tour(@RequestParam int tourId, ModelMap model) {
             Tour found = toursRepository.findById(tourId);
             model.addAttribute("tour", found);
             return "tour";
@@ -44,10 +49,10 @@ public class TourController {
     }
 
     @PostMapping(path = "/tour")
-    public String buyTour(HttpSession session, @Validated @ModelAttribute("acceptForm") AcceptingTourBean form, BindingResult result,
+    public String buyTour(Principal principal,  @Validated @ModelAttribute("acceptForm") AcceptingTourBean form, BindingResult result,
                           @RequestParam int tourId, ModelMap model) {
-        int userId = (int) session.getAttribute("userId");
-
+        User found = usersRepository.findByLogin(principal.getName());
+        int userId = found.getId();
         try {
             tourService.buySeatsForTourByUser(userId, tourId, form.getQuantity());
         } catch(NotEnoughSeatsException e) {
@@ -64,10 +69,12 @@ public class TourController {
     }
 
     @PostMapping(path = "/assessTour")
-    public String assessTour(HttpSession session, @RequestParam int tourId
+    public String assessTour(Principal principal, @RequestParam int tourId
             , @RequestParam("rating") @NotNull @PositiveOrZero int assessment, ModelMap model) {
 
-        int userId = (int)session.getAttribute("userId");
+        User found = usersRepository.findByLogin(principal.getName());
+        int userId = found.getId();
+
         List<String> errors = new ArrayList<>();
 
         try {
