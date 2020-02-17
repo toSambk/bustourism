@@ -25,8 +25,8 @@
             <property name="hibernate.connection.url" value="jdbc:h2:mem:test" />
             <property name="hibernate.connection.user" value="sa" />
             <property name="hibernate.connection.password" value="" />
-            <property name="hibernate.show_sql" value="true"/>
-            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.format_sql" value="false"/>
             <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
         </properties>
     </persistence-unit>
@@ -40,9 +40,24 @@
             <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/bustourism" />
             <property name="hibernate.connection.user" value="postgres" />
             <property name="hibernate.connection.password" value="root" />
-            <property name="hibernate.show_sql" value="true"/>
-            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.format_sql" value="false"/>
             <property name="hibernate.hbm2ddl.auto" value="create"/>
+        </properties>
+    </persistence-unit>
+
+    <persistence-unit name="MySqlPersistenceUnit">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <properties>
+            <property name="hibernate.archive.autodetection" value="class" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+            <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver" />
+            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/library" />
+            <property name="hibernate.connection.user" value="root" />
+            <property name="hibernate.connection.password" value="password" />
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.format_sql" value="false"/>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
         </properties>
     </persistence-unit>
 

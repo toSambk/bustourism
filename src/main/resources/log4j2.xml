@@ -1,9 +1,7 @@
-<Configuration status="debug" name="baeldung" packages="">
+<Configuration status="warn" name="baeldung" packages="">
     <Appenders>
         <Console name="stdout" target="SYSTEM_OUT">
-            <PatternLayout>
-                <Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n</Pattern>
-            </PatternLayout>
+            <PatternLayout pattern="%highlight{%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n}{FATAL=white, ERROR=red, WARN=blue, INFO=black, DEBUG=green, TRACE=blue}" disableAnsi="false"/>
         </Console>
         <File name="fout" fileName="logs/bustourism.log" append="true">
             <PatternLayout>
