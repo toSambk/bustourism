@@ -8,6 +8,7 @@
     <version>1.0.0-SNAPSHOT</version>
     <properties>
         <spring.version>5.2.1.RELEASE</spring.version>
+        <spring.mvc.version>5.2.3.RELEASE</spring.mvc.version>
         <hibernate.version>5.4.8.Final</hibernate.version>
         <spring.data.version>2.2.2.RELEASE</spring.data.version>
         <jackson.version>2.10.1</jackson.version>
@@ -68,7 +69,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>${spring.version}</version>
+            <version>${spring.mvc.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
