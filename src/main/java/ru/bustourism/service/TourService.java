@@ -2,6 +2,7 @@ package ru.bustourism.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.bustourism.dao.AssessmentsRepository;
 import ru.bustourism.dao.SeatsRepository;
 import ru.bustourism.dao.ToursRepository;
@@ -35,6 +36,7 @@ public class TourService {
     @Autowired
     private SeatsRepository seatsRepository;
 
+    @Transactional
     public void assessTourByUser(int userId, int tourId, int assessment) {
         User user = Optional.ofNullable(usersRepository.findById(userId)).orElseThrow(UserNotFoundException::new);
         Tour tour = Optional.ofNullable(toursRepository.findById(tourId)).orElseThrow(TourNotFoundException::new);
@@ -72,7 +74,7 @@ public class TourService {
         return average.isPresent() ? average.getAsDouble() : 0;
     }
 
-
+    @Transactional
     public void buySeatsForTourByUser(int userId, int tourId, int amount) {
         User user = Optional.ofNullable(usersRepository.findById(userId)).orElseThrow(UserNotFoundException::new);
         Tour tour = Optional.ofNullable(toursRepository.findById(tourId)).orElseThrow(TourNotFoundException::new);

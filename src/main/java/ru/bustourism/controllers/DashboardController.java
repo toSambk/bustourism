@@ -1,5 +1,7 @@
 package ru.bustourism.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,6 +25,8 @@ public class DashboardController {
     @Autowired
     private ToursRepository toursRepository;
 
+    private final static Logger logger = LoggerFactory.getLogger(DashboardController.class);
+
     @GetMapping(path = "/dashboard")
     public String dashboard(Principal principal, ModelMap model) {
         try {
@@ -32,6 +36,7 @@ public class DashboardController {
             model.addAttribute("user", user);
             return "dashboard";
         } catch(Exception notFound) {
+            logger.warn("Пользователь не найден - либо пароль не верен");
             return "mainPage";
         }
     }

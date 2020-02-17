@@ -28,6 +28,7 @@ public class LoginController {
     private PasswordEncoder encoder;
 
    // @PostMapping(path = "/login")
+    @Deprecated
     public String login(HttpSession session, @RequestParam String login, @RequestParam String password, ModelMap model) {
         try {
             User found = usersRepository.findByLoginAndEncryptedPassword(login, password);

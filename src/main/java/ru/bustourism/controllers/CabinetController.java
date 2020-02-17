@@ -21,7 +21,6 @@ public class CabinetController {
             User found = usersRepository.findByLogin(principal.getName());
             model.addAttribute("user", found);
             return "cabinet";
-
     }
 
 }

@@ -10,45 +10,32 @@ import java.util.List;
 @Table(name = "users")
 public class User implements Serializable {
 
-    public User(){}
-
-    public User(String login, String password, boolean administrator){
-        this.login = login;
-        this.encryptedPassword = password;
-        this.administrator = administrator;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private int id;
-
     @Column(name = "login", length = 32, unique = true, nullable = false)
     private String login;
-
     @JsonIgnore
     @Column(name = "password", length = 64, nullable = false)
     private String encryptedPassword;
-
     @Column(name = "administrator", nullable = false)
     private boolean administrator;
-
     @JsonIgnore
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Assessment> assessments;
-
     @JsonIgnore
-    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Seat> seats;
 
+    public User() {
+    }
 
-
-
-
-
-
-
-
+    public User(String login, String password, boolean administrator) {
+        this.login = login;
+        this.encryptedPassword = password;
+        this.administrator = administrator;
+    }
 
     public String getLogin() {
         return login;

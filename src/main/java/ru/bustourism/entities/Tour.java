@@ -1,7 +1,6 @@
 package ru.bustourism.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.ManyToAny;
 
 import javax.persistence.*;
 import javax.validation.constraints.Positive;
@@ -14,7 +13,35 @@ import java.util.List;
 @Table(name = "tours")
 public class Tour implements Serializable {
 
-    public Tour(){}
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private int id;
+    @Column(name = "name", nullable = false, unique = true)
+    private String name;
+    @Column(name = "max_number_of_seats", nullable = false)
+    @Positive
+    private int maxNumberOfSeats;
+    @Column(name = "cur_number_of_seats")
+    @PositiveOrZero
+    private int curNumberOfSeats;
+    @Column(name = "date", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date date;
+    @Column(name = "rating")
+    @PositiveOrZero
+    private double rating;
+    @JsonIgnore
+    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL/*{CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.DETACH}*/,
+            fetch = FetchType.LAZY)
+    private List<Seat> seats;
+    @JsonIgnore
+    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL/*{CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.DETACH}*/,
+            fetch = FetchType.LAZY)
+    private List<Assessment> assessments;
+
+    public Tour() {
+    }
 
     public Tour(String name, int maxNumberOfSeats, int curNumberOfSeats, Date date) {
         this.name = name;
@@ -22,48 +49,6 @@ public class Tour implements Serializable {
         this.curNumberOfSeats = curNumberOfSeats;
         this.date = date;
     }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private int id;
-
-    @Column(name = "name", nullable = false, unique = true)
-    private String name;
-
-    @Column(name = "max_number_of_seats", nullable = false)
-    @Positive
-    private int maxNumberOfSeats;
-
-    @Column(name = "cur_number_of_seats")
-    @PositiveOrZero
-    private int curNumberOfSeats;
-
-    @Column(name = "date", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date date;
-
-    @Column(name = "rating")
-    @PositiveOrZero
-    private double rating;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL/*{CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.DETACH}*/,
-            fetch = FetchType.EAGER)
-    private List<Seat> seats;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL/*{CascadeType.REFRESH, CascadeType.REMOVE, CascadeType.DETACH}*/,
-            fetch = FetchType.EAGER)
-    private List<Assessment> assessments;
-
-
-
-
-
-
-
-
 
     public List<Assessment> getAssessments() {
         return assessments;
