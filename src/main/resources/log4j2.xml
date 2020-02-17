@@ -1,0 +1,26 @@
+<Configuration status="debug" name="baeldung" packages="">
+    <Appenders>
+        <Console name="stdout" target="SYSTEM_OUT">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n</Pattern>
+            </PatternLayout>
+        </Console>
+        <File name="fout" fileName="logs/bustourism.log" append="true">
+            <PatternLayout>
+                <Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n</Pattern>
+            </PatternLayout>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Logger name="org.hibernate.SQL" level="debug">
+            <AppenderRef ref="stdout"/>
+        </Logger>
+        <Logger name="org.hibernate.type.descriptor.sql" level="trace">
+            <AppenderRef ref="stdout"/>
+        </Logger>
+        <Root level="TRACE">
+            <AppenderRef ref="stdout" level="INFO"/>
+            <AppenderRef ref="fout" level="WARN"/>
+        </Root>
+    </Loggers>
+</Configuration>
