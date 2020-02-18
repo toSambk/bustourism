@@ -1,5 +1,7 @@
 package ru.bustourism.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,8 @@ public class LoginController {
     @Autowired
     private PasswordEncoder encoder;
 
+    private final static Logger logger = LoggerFactory.getLogger(LoginController.class);
+
    // @PostMapping(path = "/login")
     @Deprecated
     public String login(HttpSession session, @RequestParam String login, @RequestParam String password, ModelMap model) {
@@ -35,6 +39,7 @@ public class LoginController {
             session.setAttribute("userId", found.getId());
             return "redirect:/dashboard";
         } catch(NoResultException | NullPointerException notFound) {
+            logger.warn("Пользователь не найден", notFound);
             model.addAttribute("login", login);
             return "mainPage";
         }
@@ -54,6 +59,7 @@ public class LoginController {
         try {
             usersRepository.save(new User(form.getLogin(), encoder.encode(form.getPassword()), false));
         } catch(Exception e) {
+            logger.warn("Пользователь с таким логином уже существует", e);
             result.addError(new FieldError("form", "login", "Пользователь с таким логином уже существует"));
         }
 

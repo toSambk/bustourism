@@ -44,7 +44,6 @@ public class TourService {
                 .orElseGet(() -> new Assessment(user, tour, assessment));
         List<Assessment> assessmentsByUser = Optional.ofNullable(user.getAssessments()).orElseGet(ArrayList::new);
         List<Assessment> assessmentsToTour = Optional.ofNullable(tour.getAssessments()).orElseGet(ArrayList::new);
-
         if (assessmentsByUser.stream().anyMatch(x -> x.getTour().getId() == tourId)) {
             Assessment found = assessmentsByUser.stream().filter(x -> x.getTour().getId() == tourId).findFirst().get();
             found.setValue(assessment);
@@ -78,9 +77,12 @@ public class TourService {
     public void buySeatsForTourByUser(int userId, int tourId, int amount) {
         User user = Optional.ofNullable(usersRepository.findById(userId)).orElseThrow(UserNotFoundException::new);
         Tour tour = Optional.ofNullable(toursRepository.findById(tourId)).orElseThrow(TourNotFoundException::new);
-        if (amount < 1)
+        if (amount < 1) {
             throw new IllegalArgumentException("Для покупки места необходимо ненулевое положительное значение");
-        if (tour.getCurNumberOfSeats() < amount) throw new NotEnoughSeatsException();
+        }
+        if (tour.getCurNumberOfSeats() < amount) {
+            throw new NotEnoughSeatsException();
+        }
         Seat seat = Optional.ofNullable(seatsRepository.findByUserAndTour(user, tour)).orElseGet(() -> new Seat(user, tour, amount));
         List<Seat> seatsOfUser = Optional.ofNullable(user.getSeats()).orElseGet(ArrayList::new);
         List<Seat> seatsOfTour = Optional.ofNullable(tour.getSeats()).orElseGet(ArrayList::new);

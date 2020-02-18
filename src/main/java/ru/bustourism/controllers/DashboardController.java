@@ -36,7 +36,7 @@ public class DashboardController {
             model.addAttribute("user", user);
             return "dashboard";
         } catch(Exception notFound) {
-            logger.warn("Пользователь не найден - либо пароль не верен");
+            logger.warn("Пользователь не найден - либо пароль не верен", notFound);
             return "mainPage";
         }
     }

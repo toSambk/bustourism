@@ -1,5 +1,7 @@
 package ru.bustourism.controllers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -40,6 +42,8 @@ public class TourController {
     @Autowired
     private UsersRepository usersRepository;
 
+    final static private Logger logger = LoggerFactory.getLogger(TourController.class);
+
     @GetMapping(path = "/tour")
     public String tour(@RequestParam int tourId, ModelMap model) {
             Tour found = toursRepository.findById(tourId);
@@ -56,12 +60,16 @@ public class TourController {
         try {
             tourService.buySeatsForTourByUser(userId, tourId, form.getQuantity());
         } catch(NotEnoughSeatsException e) {
+            logger.warn("Недостаточно свободных мест", e);
             result.addError(new FieldError("acceptForm", "quantity", "Недостаточно свободных мест"));
         } catch (IllegalArgumentException e) {
+            logger.warn("Поле должно содержать число больше или равно 1", e);
             result.addError(new FieldError("acceptForm", "quantity", "Поле должно содержать число больше или равно 1"));
         } catch (UserNotFoundException e) {
+            logger.warn("Пользователь не найден", e);
             result.addError(new FieldError("acceptForm", "quantity", "Пользователь не найден"));
         } catch (TourNotFoundException e) {
+            logger.warn("Тур не найден", e);
             result.addError(new FieldError("acceptForm", "quantity", "Тур не найден"));
         }
         model.addAttribute("tour", toursRepository.findById(tourId));
@@ -71,20 +79,18 @@ public class TourController {
     @PostMapping(path = "/assessTour")
     public String assessTour(Principal principal, @RequestParam int tourId
             , @RequestParam("rating") @NotNull @PositiveOrZero int assessment, ModelMap model) {
-
         User found = usersRepository.findByLogin(principal.getName());
         int userId = found.getId();
-
         List<String> errors = new ArrayList<>();
-
         try {
             tourService.assessTourByUser(userId, tourId, assessment);
         } catch (UserNotFoundException e) {
+            logger.warn("Пользователь не найден", e);
             errors.add("Пользователь не найден");
         } catch (TourNotFoundException e) {
+            logger.warn("Тур не найден", e);
             errors.add("Тур не найден");
         }
-
         model.addAttribute("errors", errors);
         model.addAttribute("tour", toursRepository.findById(tourId));
         return "tour";
