@@ -9,7 +9,7 @@
     <properties>
         <spring.version>5.2.1.RELEASE</spring.version>
         <spring.mvc.version>5.2.3.RELEASE</spring.mvc.version>
-        <hibernate.version>5.4.8.Final</hibernate.version>
+        <hibernate.version>5.4.24.Final</hibernate.version>
         <spring.data.version>2.2.2.RELEASE</spring.data.version>
         <jackson.version>2.10.1</jackson.version>
         <postgresql.version>9.1-901-1.jdbc4</postgresql.version>
