@@ -8,7 +8,7 @@
     <version>1.0.0-SNAPSHOT</version>
     <properties>
         <spring.version>5.2.1.RELEASE</spring.version>
-        <spring.mvc.version>5.2.3.RELEASE</spring.mvc.version>
+        <spring.mvc.version>5.3.18</spring.mvc.version>
         <hibernate.version>5.4.8.Final</hibernate.version>
         <spring.data.version>2.2.2.RELEASE</spring.data.version>
         <jackson.version>2.10.1</jackson.version>
