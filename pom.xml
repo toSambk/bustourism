@@ -13,7 +13,7 @@
         <spring.data.version>2.2.2.RELEASE</spring.data.version>
         <jackson.version>2.10.1</jackson.version>
         <postgresql.version>9.1-901-1.jdbc4</postgresql.version>
-        <hibernate.validator.version>6.1.0.Final</hibernate.validator.version>
+        <hibernate.validator.version>6.1.5.Final</hibernate.validator.version>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
     </properties>
