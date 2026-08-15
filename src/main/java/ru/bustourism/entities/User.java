@@ -1,48 +1,41 @@
 package ru.bustourism.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
 
-    public User(){}
-
-    public User(String login, String password, boolean administrator){
-        this.login = login;
-        this.password = password;
-        this.administrator = administrator;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
     private int id;
-
     @Column(name = "login", length = 32, unique = true, nullable = false)
     private String login;
-
-    @Column(name = "password", length = 32, nullable = false)
-    private String password;
-
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "users_tours", joinColumns = {@JoinColumn(referencedColumnName = "ID")},
-                                    inverseJoinColumns = {@JoinColumn(referencedColumnName = "ID")})
-    private List<Tour> tours;
-
+    @JsonIgnore
+    @Column(name = "password", length = 64, nullable = false)
+    private String encryptedPassword;
     @Column(name = "administrator", nullable = false)
     private boolean administrator;
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Assessment> assessments;
+    @JsonIgnore
+    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Seat> seats;
 
+    public User() {
+    }
 
-
-
-
-
-
-
-
+    public User(String login, String password, boolean administrator) {
+        this.login = login;
+        this.encryptedPassword = password;
+        this.administrator = administrator;
+    }
 
     public String getLogin() {
         return login;
@@ -52,12 +45,12 @@ public class User implements Serializable {
         this.login = login;
     }
 
-    public String getPassword() {
-        return password;
+    public String getEncryptedPassword() {
+        return encryptedPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setEncryptedPassword(String encryptedPassword) {
+        this.encryptedPassword = encryptedPassword;
     }
 
     public int getId() {
@@ -68,20 +61,28 @@ public class User implements Serializable {
         this.id = id;
     }
 
-    public List<Tour> getTours() {
-        return tours;
-    }
-
-    public void setTours(List<Tour> tours) {
-        this.tours = tours;
-    }
-
     public boolean isAdministrator() {
         return administrator;
     }
 
     public void setAdministrator(boolean administrator) {
         this.administrator = administrator;
+    }
+
+    public List<Assessment> getAssessments() {
+        return assessments;
+    }
+
+    public void setAssessments(List<Assessment> assessments) {
+        this.assessments = assessments;
+    }
+
+    public List<Seat> getSeats() {
+        return seats;
+    }
+
+    public void setSeats(List<Seat> seats) {
+        this.seats = seats;
     }
 
 }

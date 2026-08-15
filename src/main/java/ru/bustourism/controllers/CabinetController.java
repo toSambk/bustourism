@@ -4,26 +4,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import ru.bustourism.dao.UserDAO;
+import ru.bustourism.dao.UsersRepository;
 import ru.bustourism.entities.User;
 
 import javax.servlet.http.HttpSession;
+import java.security.Principal;
 
 @Controller
 public class CabinetController {
 
     @Autowired
-    private UserDAO userDAO;
+    private UsersRepository usersRepository;
 
     @GetMapping(path = "/cabinet")
-    public String cabinet(HttpSession session, ModelMap model) {
-        int sessionId = (int) session.getAttribute("userId");
-
-            User byId = userDAO.findById(sessionId);
-            model.addAttribute("user", byId);
+    public String cabinet(Principal principal, ModelMap model) {
+            User found = usersRepository.findByLogin(principal.getName());
+            model.addAttribute("user", found);
             return "cabinet";
-
     }
 
 }

@@ -3,37 +3,43 @@ package ru.bustourism.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "assessments")
-public class Assessment {
+@Table(name = "seats")
+public class Seat {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private int id;
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "tour_id")
     private Tour tour;
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-    @Column(name = "assessment_value")
-    private int value;
+    @Column(name = "quantity")
+    private int quantity;
 
-    public Assessment() {
+
+    public Seat() {
     }
 
-    public Assessment(User user, Tour tour, int value) {
+
+    public Seat(User user, Tour tour, int quantity) {
         this.user = user;
         this.tour = tour;
-        this.value = value;
+        this.quantity = quantity;
     }
 
-    public int getValue() {
-        return value;
+    public Seat(int quantity) {
+        this.quantity = quantity;
     }
 
-    public void setValue(int value) {
-        this.value = value;
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public int getId() {
@@ -59,5 +65,4 @@ public class Assessment {
     public void setTour(Tour tour) {
         this.tour = tour;
     }
-
 }
