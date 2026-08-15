@@ -1,0 +1,60 @@
+plugins {
+    id 'java'
+    id 'war'
+    id 'org.springframework.boot' version '2.7.18'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'ru.bustourism'
+version = '1.0.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+repositories {
+    mavenCentral()
+}
+
+configurations.configureEach {
+    exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    implementation 'org.springframework.security:spring-security-taglibs'
+    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+    implementation 'javax.servlet:jstl'
+
+    runtimeOnly 'com.h2database:h2'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'junit:junit'
+}
+
+tasks.named('test') {
+    useJUnit()
+}
+
+tasks.named('war') {
+    from('src/main/webapp')
+}
+
+tasks.named('bootWar') {
+    archiveFileName = 'bustourism.war'
+    from('src/main/webapp')
+}
+
+tasks.named('bootRun') {
+    systemProperty 'server.servlet.register-default-servlet', 'true'
+}
+
+tasks.withType(War).configureEach {
+    webAppDirectory = file('src/main/webapp')
+}

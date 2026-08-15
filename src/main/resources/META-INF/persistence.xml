@@ -7,7 +7,7 @@
             <property name="hibernate.archive.autodetection" value="class" />
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
             <property name="hibernate.connection.driver_class" value="org.h2.Driver" />
-            <property name="hibernate.connection.url" value="jdbc:h2:./target/h2-2" />
+            <property name="hibernate.connection.url" value="jdbc:h2:mem:bustourism-main;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE" />
             <property name="hibernate.connection.user" value="sa" />
             <property name="hibernate.connection.password" value="" />
             <property name="hibernate.show_sql" value="false"/>
@@ -35,11 +35,11 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <properties>
             <property name="hibernate.archive.autodetection" value="class" />
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect" />
-            <property name="hibernate.connection.driver_class" value="org.postgresql.Driver" />
-            <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/bustourism" />
-            <property name="hibernate.connection.user" value="postgres" />
-            <property name="hibernate.connection.password" value="root" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
+            <property name="hibernate.connection.driver_class" value="org.h2.Driver" />
+            <property name="hibernate.connection.url" value="jdbc:h2:mem:test-postgres-compat;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE" />
+            <property name="hibernate.connection.user" value="sa" />
+            <property name="hibernate.connection.password" value="" />
             <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.format_sql" value="false"/>
             <property name="hibernate.hbm2ddl.auto" value="create"/>
@@ -50,11 +50,11 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <properties>
             <property name="hibernate.archive.autodetection" value="class" />
-            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
-            <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver" />
-            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/library" />
-            <property name="hibernate.connection.user" value="root" />
-            <property name="hibernate.connection.password" value="password" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
+            <property name="hibernate.connection.driver_class" value="org.h2.Driver" />
+            <property name="hibernate.connection.url" value="jdbc:h2:mem:bustourism-legacy;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE" />
+            <property name="hibernate.connection.user" value="sa" />
+            <property name="hibernate.connection.password" value="" />
             <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.format_sql" value="false"/>
             <property name="hibernate.hbm2ddl.auto" value="create-drop"/>

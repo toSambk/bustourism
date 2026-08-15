@@ -16,7 +16,7 @@ public class Assessment {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    @Column(name = "value")
+    @Column(name = "assessment_value")
     private int value;
 
     public Assessment() {

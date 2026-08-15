@@ -18,7 +18,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/pages/**").denyAll()
-                .antMatchers("/", "/login", "/register", "/resources/**", "/sessionclear").permitAll()
+                .antMatchers("/", "/login", "/register", "/resources/**", "/sessionclear", "/h2-console/**").permitAll()
                 .antMatchers("/dashboard", "/cabinet", "/tour", "/assessTour")
                 .hasAnyRole("USER", "ADMIN")
                 .antMatchers("/cabinet").hasAnyRole("USER", "ADMIN")
@@ -31,6 +31,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("login")
                 .passwordParameter("password")
                 .loginProcessingUrl("/login");
+
+        http.csrf().ignoringAntMatchers("/h2-console/**");
+        http.headers().frameOptions().sameOrigin();
     }
 
     @Bean
